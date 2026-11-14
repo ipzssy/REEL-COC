@@ -43,7 +43,11 @@ for pos, (cid, liste) in enumerate(PLAN):
         if not ch:
             print('introuvable :', mot); continue
         vus.add(ch['id'])
-        maj.append({'id': ch['id'], 'parent_id': cid, 'position': i, 'lock_permissions': False})
+        if ch.get('parent_id') != cid:  # un déplacement à la fois (permissions du salon conservées)
+            rr = requests.patch(f"{API}/channels/{ch['id']}", headers=HDR, timeout=30, json={'parent_id': cid})
+            print('déplacé', norm(ch['name']), rr.status_code)
+            import time; time.sleep(0.6)
+        maj.append({'id': ch['id'], 'position': i})
 r = requests.patch(f'{API}/guilds/{GUILD}/channels', headers=HDR, timeout=30, json=maj)
 print('rangement', r.status_code, r.text[:200]); r.raise_for_status()
 for c in requests.get(f'{API}/guilds/{GUILD}/channels', headers=HDR, timeout=30).json():
