@@ -1,0 +1,37 @@
+name: Bienvenue Discord
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+    inputs:
+      test:
+        description: 'Mode test (1 = juste générer une image)'
+        default: '0'
+permissions:
+  contents: write
+concurrency: bienvenue
+jobs:
+  bienvenue:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -q pillow requests
+      - run: python outils/discord_bienvenue.py
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DRY_RUN: ${{ github.event.inputs.test || '0' }}
+          CC_WD: ${{ runner.temp }}/cc
+      - if: ${{ github.event.inputs.test == '1' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-bienvenue
+          path: sortie/test_bienvenue.jpg
+      - name: Sauvegarde de l'état
+        if: ${{ github.event.inputs.test != '1' }}
+        run: |
+          git config user.name "clash-center-bot"; git config user.email "bot@users.noreply.github.com"
+          git add etat/bienvenue.json
+          git diff --cached --quiet || (git commit -m "Bienvenue : état" && git pull --rebase -q && git push -q)
