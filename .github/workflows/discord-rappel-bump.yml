@@ -1,0 +1,14 @@
+name: Rappel bump Discord
+on:
+  schedule:
+    - cron: '3 7-21/2 * * *'   # toutes les 2 h, de 8h à 22h (heure de Paris, hiver)
+  workflow_dispatch:
+jobs:
+  rappel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q requests
+      - run: python outils/discord_rappel_bump.py
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
