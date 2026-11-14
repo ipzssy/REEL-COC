@@ -11,9 +11,9 @@ DRY = os.environ.get('DRY_RUN') == '1'
 etat = json.load(open(ETAT))
 
 def fond():
-    p = os.path.join(WD, 'fond_bienvenue.jpg')
+    p = os.path.join(WD, 'fond_bienvenue2.jpg')
     if not os.path.exists(p):
-        b = Image.open(build_banner()).convert('RGB').resize((1100, 619), Image.LANCZOS)
+        b = Image.open(build_banner(False)).convert('RGB').resize((1100, 619), Image.LANCZOS)
         b.crop((0, 60, 1100, 560)).save(p, quality=92)
     return Image.open(p).convert('RGBA')
 
@@ -25,7 +25,8 @@ def texte(img, s, size, y, fill, stroke=8):
 
 def carte(membre, rang):
     u = membre['user']; nom = membre.get('nick') or u.get('global_name') or u['username']
-    img = fond(); ov = Image.new('RGBA', img.size, (20, 6, 40, 110)); img.alpha_composite(ov)
+    img = fond(); ov = Image.new('L', img.size, 0); ImageDraw.Draw(ov).ellipse((150, -40, 950, 540), fill=150)
+    sh = Image.new('RGBA', img.size, (20, 6, 40, 255)); sh.putalpha(ov.filter(ImageFilter.GaussianBlur(70))); img.alpha_composite(sh)
     if u.get('avatar'):
         url = f"https://cdn.discordapp.com/avatars/{u['id']}/{u['avatar']}.png?size=256"
     else:

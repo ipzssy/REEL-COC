@@ -162,7 +162,7 @@ def put_banner(bg, im, w, cx, cy, rot=0, flip=False):
     x = int(cx - im.width / 2); y = int(cy - im.height / 2); bg.alpha_composite(sh, (x + 18, y + 28)); bg.alpha_composite(im, (x, y))
 
 
-def build_banner():
+def build_banner(avec_texte=True):
     random.seed(11)
     BW, BH = 2560, 1440; CX, CY = 1280, 720
     bg = Image.new('RGB', (BW, BH)); d = ImageDraw.Draw(bg)
@@ -203,6 +203,9 @@ def build_banner():
         dd.polygon([(x + s * math.cos(ang + k * 2.1), y + s * 0.7 * math.sin(ang + k * 2.1)) for k in range(3)], fill=random.choice([(120, 70, 40, 255), (90, 90, 100, 255), (150, 100, 60, 255), (60, 40, 30, 255)]))
     bg.alpha_composite(db)
     bg.alpha_composite(smoke(60, (1250, 1560), (160, 320), (255, 245, 235), 255, 30))
+    if not avec_texte:
+        p = WD + '/banniere_fond.jpg'; bg.convert('RGB').save(p, quality=90)
+        return p
     size, y = 260, CY - 215; dd = ImageDraw.Draw(bg); s = 'CLASH CENTER'
     f = ImageFont.truetype(FONT, size); bb = dd.textbbox((0, 0), s, font=f)
     while bb[2] - bb[0] > 1480:
