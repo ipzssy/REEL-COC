@@ -162,7 +162,7 @@ def put_banner(bg, im, w, cx, cy, rot=0, flip=False):
     x = int(cx - im.width / 2); y = int(cy - im.height / 2); bg.alpha_composite(sh, (x + 18, y + 28)); bg.alpha_composite(im, (x, y))
 
 
-def build_banner(avec_texte=True):
+def build_banner(avec_texte=True, personnages=True):
     random.seed(11)
     BW, BH = 2560, 1440; CX, CY = 1280, 720
     bg = Image.new('RGB', (BW, BH)); d = ImageDraw.Draw(bg)
@@ -192,10 +192,11 @@ def build_banner(avec_texte=True):
         L = L.filter(ImageFilter.GaussianBlur(14)); ImageDraw.Draw(L).line(pts, fill=(255, 240, 255, 255), width=width, joint='curve'); return L
     for (a, b, c, e) in [(CX - 1100, CY - 480, CX - 300, CY + 60), (CX + 1100, CY - 460, CX + 320, CY + 40), (CX - 900, CY + 520, CX - 250, CY + 60), (CX + 950, CY + 500, CX + 260, CY + 80)]:
         bg.alpha_composite(bolt(a, b, c, e, 10))
-    put_banner(bg, dl('Balloon 6.png'), 560, 360, 330, rot=12)
-    put_banner(bg, dl('P.E.K.K.A info.png'), 640, 520, 980)
-    put_banner(bg, dl('Hog Rider15.png'), 620, 2120, 1000, rot=-4, flip=True)
-    put_banner(bg, dl('Dragon infobox2.png'), 560, 2210, 330, rot=-8, flip=True)
+    if personnages:
+        put_banner(bg, dl('Balloon 6.png'), 560, 360, 330, rot=12)
+        put_banner(bg, dl('P.E.K.K.A info.png'), 640, 520, 980)
+        put_banner(bg, dl('Hog Rider15.png'), 620, 2120, 1000, rot=-4, flip=True)
+        put_banner(bg, dl('Dragon infobox2.png'), 560, 2210, 330, rot=-8, flip=True)
     db = Image.new('RGBA', (BW, BH), (0, 0, 0, 0)); dd = ImageDraw.Draw(db)
     for i in range(70):
         x = random.choice([random.randint(0, 850), random.randint(1710, BW)]); y = random.randint(0, BH); s = random.randint(10, 34)

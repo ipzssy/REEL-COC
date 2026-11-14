@@ -22,9 +22,9 @@ jobs:
           os.environ['CC_WD'] = os.environ['RUNNER_TEMP'] + '/cc'
           exec(open('outils/miniatures.py', encoding='utf-8').read())
           from PIL import Image
-          b = Image.open(build_banner(False)).convert('RGB')
-          b.resize((1100, 619), Image.LANCZOS).crop((0, 60, 1100, 560)).save('etat-branche/fond_bienvenue_1100x500.jpg', quality=93)
-          b.resize((1920, 1080), Image.LANCZOS).save('etat-branche/fond_bienvenue_1920x1080.jpg', quality=93)
+          b = Image.open(build_banner(False, personnages=False)).convert('RGB')
+          b.resize((1100, 619), Image.LANCZOS).crop((0, 60, 1100, 560)).save('etat-branche/fond_bienvenue_v2_1100x500.jpg', quality=93)
+          b.resize((1920, 1080), Image.LANCZOS).save('etat-branche/fond_bienvenue_v2_1920x1080.jpg', quality=93)
           P
       - working-directory: etat-branche
         run: |
