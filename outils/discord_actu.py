@@ -20,7 +20,7 @@ for e in root.findall('a:entry', ns):
 if not nouveaux:
     print('Pas de nouveauté'); raise SystemExit(0)
 canal = os.environ.get('DISCORD_CHANNEL_ID') or salon('actu')
-for pub, titre, lien, img in sorted(nouveaux):
+for pub, titre, lien, img in sorted(nouveaux)[-int(os.environ.get('MAX_POSTS', '3')):]:
     poster(canal, {'embeds': [{'title': '📰 ' + titre, 'url': lien, 'color': 0xF5B000,
                                'description': "Nouvelle vidéo officielle de **Clash of Clans** ! Ton avis en dessous 👇",
                                'image': {'url': img}, 'footer': {'text': 'Actu Clash • source : chaîne officielle Clash of Clans'}}],
