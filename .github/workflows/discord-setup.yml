@@ -7,6 +7,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: pip install -q requests
-      - run: python outils/discord_salons_prives.py
+      - run: python outils/discord_organise.py
         env:
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
