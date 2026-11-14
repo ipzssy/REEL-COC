@@ -6,7 +6,7 @@ TOKEN = os.environ['DISCORD_BOT_TOKEN']
 CHANNEL = os.environ.get('DISCORD_CHANNEL_ID') or '1515692264603779155'  # 💬┃général par défaut
 SLOT = os.environ.get('SLOT', '19h')
 API = 'https://discord.com/api/v10'
-H = {'Authorization': f'Bot {TOKEN}', 'User-Agent': 'ClashCenterBot (github, 1.0)'}
+HDR = {'Authorization': f'Bot {TOKEN}', 'User-Agent': 'ClashCenterBot (github, 1.0)'}
 
 today = datetime.datetime.now(ZoneInfo('Europe/Paris')).date().isoformat()
 plan = requests.get('https://raw.githubusercontent.com/ipzssy/REEL-COC/main/planning_tiktok.json', timeout=30).json()
@@ -32,7 +32,7 @@ embed = {
 }
 payload = {'embeds': [embed], 'allowed_mentions': {'parse': []}}
 with open(thumb, 'rb') as f:
-    r = requests.post(f'{API}/channels/{CHANNEL}/messages', headers=H,
+    r = requests.post(f'{API}/channels/{CHANNEL}/messages', headers=HDR,
                       data={'payload_json': json.dumps(payload)},
                       files={'files[0]': ('miniature.jpg', f, 'image/jpeg')}, timeout=60)
 print(r.status_code, r.text[:300])
