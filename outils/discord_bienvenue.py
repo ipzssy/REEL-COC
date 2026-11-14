@@ -6,7 +6,7 @@ from discord_commun import API, HDR, GUILD, salon
 exec(open(os.path.join(os.path.dirname(__file__), 'miniatures.py'), encoding='utf-8').read())
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageOps
 
-ETAT = os.path.join(os.path.dirname(__file__), '..', 'etat', 'bienvenue.json')
+ETAT = os.environ.get('ETAT_FILE') or os.path.join(os.path.dirname(__file__), '..', 'etat', 'bienvenue.json')
 DRY = os.environ.get('DRY_RUN') == '1'
 etat = json.load(open(ETAT))
 
@@ -47,7 +47,7 @@ if DRY:
     g = requests.get(f'{API}/guilds/{GUILD}', headers=HDR, timeout=30).json()
     owner = requests.get(f"{API}/guilds/{GUILD}/members/{g['owner_id']}", headers=HDR, timeout=30).json()
     p, _ = carte(owner, 221); print('test :', p)
-    os.makedirs('sortie', exist_ok=True); Image.open(p).save('sortie/test_bienvenue.jpg', quality=90)
+    d = os.path.dirname(ETAT); Image.open(p).convert('RGB').save(os.path.join(d, 'test_bienvenue.jpg'), quality=90)
     raise SystemExit(0)
 
 r = requests.get(f'{API}/guilds/{GUILD}/members?limit=1000', headers=HDR, timeout=30)
