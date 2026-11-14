@@ -18,7 +18,7 @@ jobs:
       - run: pip install -q pillow requests
       - run: python outils/discord_annonce.py
         env:
-          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN || secrets.TOKEN_BOT_CLASH_OF_CLAN }}
           DISCORD_CHANNEL_ID: ${{ vars.DISCORD_CHANNEL_ID }}
           SLOT: ${{ github.event.inputs.slot || '19h' }}
           CC_WD: ${{ runner.temp }}/cc
