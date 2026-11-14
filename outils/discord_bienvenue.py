@@ -51,7 +51,7 @@ if DRY:
 
 r = requests.get(f'{API}/guilds/{GUILD}/members?limit=1000', headers=HDR, timeout=30)
 if r.status_code == 403:
-    print("Active « Server Members Intent » dans le Developer Portal (onglet Bot)."); raise SystemExit(1)
+    print("Active « Server Members Intent » dans le Developer Portal (onglet Bot)."); raise SystemExit(0)
 r.raise_for_status()
 membres = sorted([m for m in r.json() if not m['user'].get('bot')], key=lambda m: m['joined_at'])
 if etat['dernier'] is None:  # premier lancement : on ne souhaite pas la bienvenue à tout le monde
