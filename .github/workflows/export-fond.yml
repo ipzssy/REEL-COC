@@ -1,0 +1,32 @@
+name: Export fond bienvenue
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fond:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: etat
+          path: etat-branche
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -q pillow requests
+      - run: |
+          python - <<'P'
+          import os
+          os.environ['CC_WD'] = os.environ['RUNNER_TEMP'] + '/cc'
+          exec(open('outils/miniatures.py', encoding='utf-8').read())
+          from PIL import Image
+          b = Image.open(build_banner(False)).convert('RGB')
+          b.resize((1100, 619), Image.LANCZOS).crop((0, 60, 1100, 560)).save('etat-branche/fond_bienvenue_1100x500.jpg', quality=93)
+          b.resize((1920, 1080), Image.LANCZOS).save('etat-branche/fond_bienvenue_1920x1080.jpg', quality=93)
+          P
+      - working-directory: etat-branche
+        run: |
+          git config user.name "clash-center-bot"; git config user.email "bot@users.noreply.github.com"
+          git add -A && git commit -m "Fonds de bienvenue" && git push -q origin HEAD:etat
