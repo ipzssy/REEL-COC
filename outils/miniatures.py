@@ -4,7 +4,7 @@ import os, re, math, random, json, subprocess, sys, requests
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageChops
 
 UA = {'User-Agent': 'Mozilla/5.0'}
-WD = '/home/user/cc'
+WD = os.environ.get('CC_WD', '/home/user/cc')
 os.makedirs(WD, exist_ok=True)
 FONT = WD + '/lg.ttf'
 if not os.path.exists(FONT):

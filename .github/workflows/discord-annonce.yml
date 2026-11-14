@@ -1,0 +1,24 @@
+name: Annonce Discord
+on:
+  schedule:
+    - cron: '7 18 * * *'   # 19h07 heure de Paris (hiver)
+  workflow_dispatch:
+    inputs:
+      slot:
+        description: 'Créneau à annoncer (19h ou 21h)'
+        default: '19h'
+jobs:
+  annonce:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -q pillow requests
+      - run: python outils/discord_annonce.py
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_CHANNEL_ID: ${{ vars.DISCORD_CHANNEL_ID }}
+          SLOT: ${{ github.event.inputs.slot || '19h' }}
+          CC_WD: ${{ runner.temp }}/cc
