@@ -1,0 +1,20 @@
+name: Deplace annonce vers nouvelles-videos
+on:
+  workflow_dispatch:
+jobs:
+  deplace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -q pillow requests
+      - run: python outils/discord_nettoie_general.py
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+      - run: python outils/discord_annonce.py
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          SLOT: '19h'
+          CC_WD: ${{ runner.temp }}/cc
