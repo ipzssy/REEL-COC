@@ -1,0 +1,19 @@
+name: Actu Clash Discord
+on:
+  schedule:
+    - cron: '23 */3 * * *'   # toutes les 3 heures
+  workflow_dispatch:
+    inputs:
+      fenetre_h:
+        description: 'Heures à remonter'
+        default: '3'
+jobs:
+  actu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q requests
+      - run: python outils/discord_actu.py
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          FENETRE_H: ${{ github.event.inputs.fenetre_h || '3' }}

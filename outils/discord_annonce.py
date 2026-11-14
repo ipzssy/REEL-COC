@@ -3,7 +3,9 @@ import os, json, datetime, requests
 from zoneinfo import ZoneInfo
 
 TOKEN = os.environ['DISCORD_BOT_TOKEN']
-CHANNEL = os.environ.get('DISCORD_CHANNEL_ID') or '1515692264603779155'  # 💬┃général par défaut
+import sys; sys.path.insert(0, os.path.dirname(__file__))
+from discord_commun import salon
+CHANNEL = os.environ.get('DISCORD_CHANNEL_ID') or salon('nouvelles-vid', 'annonce')  # sinon 💬┃général
 SLOT = os.environ.get('SLOT', '19h')
 API = 'https://discord.com/api/v10'
 HDR = {'Authorization': f'Bot {TOKEN}', 'User-Agent': 'ClashCenterBot (github, 1.0)'}

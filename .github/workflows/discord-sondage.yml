@@ -1,0 +1,14 @@
+name: Sondage Discord
+on:
+  schedule:
+    - cron: '17 19 */2 * *'   # 20h17 heure de Paris, un jour sur deux
+  workflow_dispatch:
+jobs:
+  sondage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q requests
+      - run: python outils/discord_sondage.py
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
