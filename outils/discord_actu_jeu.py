@@ -98,17 +98,17 @@ def meta(page, nom):
     return html.unescape(m.group(1)).strip() if m else ''
 n = 0
 try:
-    liste = requests.get(BLOG, headers=UA, timeout=30).text
+    rl = requests.get(BLOG, headers=UA, timeout=30); rl.encoding = 'utf-8'; liste = rl.text
     liens = list(dict.fromkeys(re.findall(r'/en/games/clashofclans/blog/news/[a-z0-9\-]+/?', liste)))[:8]
     for lien in liens:
         url = 'https://supercell.com' + lien.rstrip('/') + '/'
         if n >= MAX['blog'] or deja(url) or deja(url.rstrip('/')):
             continue
-        page = requests.get(url, headers=UA, timeout=30).text
-        d = (meta(page, 'article:published_time') or (re.search(r'"datePublished"\s*:\s*"([^"]+)', page) or [None, ''])[1])[:10]
+        rp = requests.get(url, headers=UA, timeout=30); rp.encoding = 'utf-8'; page = rp.text
+        d = (meta(page, 'article:published_time') or (re.search(r'datetime=["\']?(20\d\d-\d\d-\d\d)', page) or re.search(r'\b(20\d\d-\d\d-\d\d)\b', page) or [None, ''])[1])[:10]
         if not d or datetime.date.fromisoformat(d) < BLOG_DEPUIS:
             continue
-        titre, desc, img = meta(page, 'og:title'), meta(page, 'og:description'), meta(page, 'og:image')
+        titre, desc, img = re.sub(r'\s*[×x]\s*Clash of Clans\s*$', '', meta(page, 'og:title')), meta(page, 'og:description'), meta(page, 'og:image')
         if not titre:
             continue
         titre_fr, desc_fr = traduire(titre), traduire(desc[:600])
