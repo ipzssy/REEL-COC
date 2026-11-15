@@ -21,3 +21,6 @@ Images : icônes du wiki Fandom Clash of Clans.
 
 ## Version B retenue (script « STOP ! », 25 s) — short.mp4 / spec.json
 Accroche : vrai écran de victoire du jeu en vidéo (wiki Fandom, recadré sans les pseudos), « GIGA UPDATE » + « X4 BUTIN ? ». Sous-titres gros mot par mot (`"subs": "pop"` : mot actif jaune, mots clés rouges). Voix plus rapide (×1,1). Fin : « Entre la Battle Bake et le Star Bonus Snack, tu choisis quoi ? Dis-le en commentaire, le débat est ouvert ! Et rejoins le Discord, lien en bio. »
+
+## Version C (25 s) — short_C.mp4 / spec_C.json
+Une seule source de texte : les sous-titres pop (remontés au centre, « quatre » affiché « X4 »). Plus de titres, étiquettes, légendes, tampons ni alerte. Ouverture : flash blanc + zoom très rapide + secousse sur l'écran de victoire. Images des snacks en zoom-in/zoom-out sec toutes les 0,6 s avec un « pop » sonore (`"punch"`). Fin : icônes Battle Bake / Star Bonus Snack au-dessus des barres de vote (`"clean": true`).

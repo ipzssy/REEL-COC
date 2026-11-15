@@ -216,6 +216,12 @@ def card(frame, caption=None, style="polaroid", badge="● REPLAY", sub="Clash o
         d.text((24, fh + 80), sub, font=F(BOLDF, 26), fill=(150, 150, 155, 255))
     return im
 
+def icon(name, size):
+    k = ("icon", name, size)
+    if k not in _tc:
+        im = Image.open(os.path.join("img", name)).convert("RGBA"); im.thumbnail((size, size), Image.LANCZOS); _tc[k] = im
+    return _tc[k]
+
 def gauge(frac, w=150, h=420):
     im = Image.new("RGBA", (w + 200, h + 170), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
     x0 = 100
@@ -243,9 +249,11 @@ def subtitles(img, i, t):
         if grp[0][0] - 0.05 <= t < end: g = grp
     if g is None: return
     if TH["subs"] == "pop":
-        d = ImageDraw.Draw(img); sz = 92
+        d = ImageDraw.Draw(img); sz = 92; SY = SPEC.get("subs_y", 1430)
         while True:
             f = F(BLACKF, sz); sp = f.getlength(" ") * 1.7
+            DM = SPEC.get("display", {})
+            g = [(a, b, DM.get(norm(w), w) + (w[-1] if w[-1] in ".,!?" and norm(w) in DM else "")) for a, b, w in g]
             ws = [f.getlength(w.upper()) * 1.08 for _, _, w in g]; tw = sum(ws) + sp * (len(g) - 1)
             if tw < 960 or sz <= 50: break
             sz -= 4
@@ -255,8 +263,8 @@ def subtitles(img, i, t):
             k = 1.0 + (0.22 * (1 - eo(prog(t, a, 0.14))) + 0.08 if on else 0.0)
             col = RED if is_key(w) and said else (YEL if on else (WHITE if said else (150, 150, 155)))
             fz = F(BLACKF, int(sz * k)); cx = x + wl / 2
-            d.text((cx + 5, 1436), w.upper(), font=fz, fill=(0, 0, 0), anchor="mm", stroke_width=9, stroke_fill=(0, 0, 0))
-            d.text((cx, 1430), w.upper(), font=fz, fill=col, anchor="mm", stroke_width=7, stroke_fill=(0, 0, 0))
+            d.text((cx + 5, SY + 6), w.upper(), font=fz, fill=(0, 0, 0), anchor="mm", stroke_width=9, stroke_fill=(0, 0, 0))
+            d.text((cx, SY), w.upper(), font=fz, fill=col, anchor="mm", stroke_width=7, stroke_fill=(0, 0, 0))
             x += wl + sp
         return
     sz = 54; KB = SPEC.get("big_keys", 1.0)
@@ -289,6 +297,8 @@ CLIPS = {"A1": "attaque_01_nettoyage_finale", "A2": "attaque_02_attaque_entiere_
          "R1": "remparts_01_explosion", "S1": "sorts_01_tremblement_de_terre", "S2": "sorts_02_lanceur_de_bucher",
          "S3": "sorts_03_rage", "S4": "sorts_04_gel", "S5": "sorts_05_foudre_tremblement", "V1": "village_01_vue_ensemble"}
 
+PUNCH = SPEC.get("punch", 0.6) or 0.6
+CLEAN = bool(SPEC.get("clean"))
 class Still:
     """Image fixe (img:<fichier> dans <video>/img/) animée en zoom lent, quand aucun clip de gameplay n'existe."""
     def __init__(self, name, dur, w, h, z0=1.0, z1=1.10):
@@ -298,6 +308,11 @@ class Still:
         self.w, self.h, self.dur, self.z0, self.z1 = w, h, max(dur, 0.1), z0, z1
     def get(self, t):
         # petits zooms : un cran de zoom rapide toutes les 0,9 s (en plus du zoom lent)
+        if SPEC.get("punch"):  # zoom-in sec puis zoom-out à chaque temps
+            k = int(t / PUNCH); z = 1.0 + 0.05 * cl(t / self.dur) + 0.17 * (1 - eo(prog(t - k * PUNCH, 0.0, PUNCH * 0.8)))
+            cw, ch = self.w / z, self.h / z
+            x0 = (self.im.width - cw) / 2; y0 = (self.im.height - ch) / 2
+            return self.im.transform((self.w, self.h), Image.EXTENT, (x0, y0, x0 + cw, y0 + ch), Image.BICUBIC)
         k = int(t / 0.9); f = eo(prog(t - k * 0.9, 0.0, 0.18))
         z = min(1.25, self.z0 + (self.z1 - self.z0) * cl(t / self.dur) + 0.045 * (k + f))
         cw, ch = self.w / z, self.h / z
@@ -367,6 +382,9 @@ def draw_scene(i, t, clip, img):
         fr = clip.get(t); z = 1.45 - 0.45 * eo(prog(t, 0.0, 0.22))
         sc_ = Image.new("RGBA", (fr.width + 16, fr.height + 16), RED + (255,)); sc_.paste(fr, (8, 8))
         paste_c(img, sc_, W / 2, 790, scale=z)
+        if CLEAN:
+            addsh(shake_at(t, 0.0, 34, 0.4))
+            return sh
         blink = 1.0 if (t > 1.2 or int(t / 0.18) % 2 == 0) else 0.55
         al = tag(s.get("alert", "ÉNORME CHANGEMENT"), RED, WHITE, 64)
         paste_c(img, al, W / 2, 330, scale=1.25 - 0.25 * eo(prog(t, 0.0, 0.15)), alpha=blink)
@@ -439,6 +457,10 @@ def draw_scene(i, t, clip, img):
                 q = prog(t, tt_, 0.18)
                 paste_c(img, tag(txt1, PAPER, INK, 50), W / 2 + 60, 1350, scale=1.3 - 0.3 * eo(q), rot=-3, alpha=q)
         addsh(shake_at(t, 0.0, 26, 0.3))
+    elif kind == "std" and CLEAN:
+        fr = clip.get(t); c = Image.new("RGBA", (fr.width + 16, fr.height + 16), RED + (255,)); c.paste(fr, (8, 8))
+        enter(img, c, W / 2, 820, prog(t, 0.0, 0.22), CS)
+        addsh(shake_at(t, 0.0, 16, 0.22))
     elif kind == "std":
         main, sub = s["head"]; big = bool(sub)
         draw_head(img, t, main, sub, big)
@@ -484,6 +506,18 @@ def draw_scene(i, t, clip, img):
                 yy = sy if not (big and (tags or flow)) else 930
                 paste_c(img, stamp(txt, 130), W / 2 + 60, yy, scale=2 - eo(q), rot=-10 if i % 2 else 9, alpha=min(1, 2 * q))
                 addsh(shake_at(t, t0, 18, 0.25))
+    elif kind == "versus" and CLEAN:
+        ta = wt(i, s["w1"]); tb = wt(i, s["w2"])
+        for k, (tk, ic, cx) in enumerate([(ta, s["icons"][0], W / 2 - 250), (tb, s["icons"][1], W / 2 + 250)]):
+            if t >= tk - 0.15:
+                q = prog(t, tk - 0.15, 0.25)
+                paste_c(img, icon(ic, 330), cx, 380, alpha=q, scale=1.4 - 0.4 * eback(q))
+                fill = 0.15 + 0.75 * (0.5 + 0.5 * math.sin(t * (5 + 2 * k) + k))
+                paste_c(img, gauge(fill * eo(q)), cx, 830, alpha=q)
+        tq = wt(i, s["qword"])
+        if t >= tq:
+            q = prog(t, tq, 0.2)
+            paste_c(img, title("?", 330, RED), W / 2, 760, scale=1.6 - 0.6 * eback(q), alpha=q)
     elif kind == "versus":
         (n1, n2), (s1, s2) = s["names"], s["subs"]
         ta = wt(i, s["w1"]); tb = wt(i, s["w2"])
@@ -511,15 +545,18 @@ def scene_events(i):
     def ev(t, k): E.append((round(STARTS[i] + t, 3), k))
     ev(0.0, "whoosh")
     if s["kind"] == "hook":
-        ev(0.0, "boom"); ev(wt(i, s["stamp"][0]), "stamp")
+        ev(0.0, "boom")
+        if s.get("stamp"): ev(wt(i, s["stamp"][0]), "stamp")
         if s.get("tag"): ev(wt(i, s["tag"][0]), "pop")
     elif s["kind"] == "std":
-        main = s["head"][0]
+        main = s.get("head", [""])[0]
         if main.startswith("ERREUR") or main.startswith("PIÈGE"): ev(0.05, "buzz")
         elif s.get("result"): ev(0.0, "boom")
         else: ev(0.05, "ding")
         if s.get("stamp"): ev(wt(i, s["stamp"][0]), "stamp")
         for tg in s.get("tags", [])[:3] + s.get("flow", [])[:2]: ev(wt(i, tg[0]), "pop")
+        if SPEC.get("punch") and str(s.get("clip", "")).startswith("img:"):
+            for k in range(1, int(SCENES[i] / PUNCH)): ev(k * PUNCH, "pop")
     else:
         ev(wt(i, s["w1"]), "pop"); ev(wt(i, s["w2"]), "pop"); ev(wt(i, s["qword"]), "boom"); ev(wt(i, s["cword"]) - 0.4, "ding")
     return E
@@ -541,7 +578,10 @@ def frame(i, t, clip):
     z = 1.0 + 0.035 * t / SCENES[i]
     vw, vh = W / z, H / z
     x0 = (W - vw) / 2 + dx; y0 = (H - vh) / 2 + dy
-    return img.transform((W, H), Image.EXTENT, (x0, y0, x0 + vw, y0 + vh), Image.BILINEAR)
+    out = img.transform((W, H), Image.EXTENT, (x0, y0, x0 + vw, y0 + vh), Image.BILINEAR)
+    if CLEAN and SC[i]["kind"] == "hook" and t < 0.12:  # flash blanc plein écran à la frame 0
+        out = Image.blend(out, Image.new("RGB", (W, H), (255, 255, 255)), 0.85 * (1 - t / 0.12))
+    return out
 
 def render(i):
     nf = int(round(SCENES[i] * FPS)); clip = setup(i)
