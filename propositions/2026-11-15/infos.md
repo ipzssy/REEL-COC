@@ -1,5 +1,7 @@
 # Proposition du 15/11/2026 — Star Bonus refondu + Magic Snacks (À VALIDER)
 
+Montage : ancien moteur `outils/moteur` (style « gel »), écran d'ouverture sur tablette (`"theme": {"hook": "tablet"}`, option `"laptop"` pour un PC portable). Rendu : `bash outils/moteur/build.sh <dossier> short.mp4` avec `img/` et `voice/v0.wav` à `v8.wav`.
+
 **Titre YouTube** : Le Star Bonus change : butin x4 avec les Snacks ! #clashofclans #shorts
 
 **Description** : Supercell refond le Star Bonus : les récompenses dépendent maintenant de ton niveau d'hôtel de ville. 2 étoiles = Snack Pack avec une Battle Bake, 5 étoiles = butin, minerai et un 2e Snack Pack. Battle Bake (butin x2/x3/x4), Loot Cart Lolly, Clan Castle Slice, Star Bonus Snack : tout est expliqué.

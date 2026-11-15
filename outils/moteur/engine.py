@@ -184,7 +184,7 @@ def stamp(text, sz=140):
     _tc[k] = im
     return im
 
-def card(frame, caption=None, style="polaroid"):
+def card(frame, caption=None, style="polaroid", badge="● REPLAY", sub="Clash of Clans · attaque"):
     fw, fh = frame.size
     if style == "polaroid":
         b, bb = 20, (96 if caption else 20)
@@ -203,9 +203,9 @@ def card(frame, caption=None, style="polaroid"):
         d.rectangle([0, fh, fw, fh + 6], fill=(60, 60, 64, 255))
         d.rectangle([0, fh, int(fw * 0.62), fh + 6], fill=RED + (255,))
         d.rounded_rectangle([18, 16, 150, 58], radius=8, fill=RED + (255,))
-        d.text((84, 37), "● REPLAY", font=F(XBF, 24), fill=ACC_FG + (255,), anchor="mm")
+        d.text((84, 37), badge, font=F(XBF, 24), fill=ACC_FG + (255,), anchor="mm")
         d.text((24, fh + 30), caption or "Clash of Clans", font=F(XBF, 40), fill=(240, 240, 240, 255))
-        d.text((24, fh + 80), "Clash of Clans · attaque", font=F(BOLDF, 26), fill=(150, 150, 155, 255))
+        d.text((24, fh + 80), sub, font=F(BOLDF, 26), fill=(150, 150, 155, 255))
     return im
 
 def gauge(frac, w=150, h=420):
@@ -258,7 +258,24 @@ CLIPS = {"A1": "attaque_01_nettoyage_finale", "A2": "attaque_02_attaque_entiere_
          "R1": "remparts_01_explosion", "S1": "sorts_01_tremblement_de_terre", "S2": "sorts_02_lanceur_de_bucher",
          "S3": "sorts_03_rage", "S4": "sorts_04_gel", "S5": "sorts_05_foudre_tremblement", "V1": "village_01_vue_ensemble"}
 
+class Still:
+    """Image fixe (img:<fichier> dans <video>/img/) animée en zoom lent, quand aucun clip de gameplay n'existe."""
+    def __init__(self, name, dur, w, h, z0=1.0, z1=1.10):
+        im = Image.open(os.path.join("img", name)).convert("RGB")
+        sc = max(w / im.width, h / im.height)
+        self.im = im.resize((int(im.width * sc) + 1, int(im.height * sc) + 1), Image.LANCZOS)
+        self.w, self.h, self.dur, self.z0, self.z1 = w, h, max(dur, 0.1), z0, z1
+    def get(self, t):
+        z = self.z0 + (self.z1 - self.z0) * cl(t / self.dur)
+        cw, ch = self.w / z, self.h / z
+        x0 = (self.im.width - cw) / 2; y0 = (self.im.height - ch) / 2
+        return self.im.transform((self.w, self.h), Image.EXTENT, (x0, y0, x0 + cw, y0 + ch), Image.BICUBIC)
+    def close(self): pass
+
 class Clip:
+    def __new__(cls, key, ss, dur, w=960, h=540, crop=None):
+        if str(key).startswith("img:"): return Still(key[4:], dur, w, h)
+        return super().__new__(cls)
     def __init__(self, key, ss, dur, w=960, h=540, crop=None):
         vf = (crop + "," if crop else "") + f"scale={w}:{h}:flags=lanczos,unsharp=5:5:0.4"
         self.w, self.h = w, h
@@ -282,6 +299,8 @@ def setup(i):
     if s["kind"] == "hook":
         if TH["hook"] == "phone": return Clip(s["clip"], s["ss"], D, 540, 960, "crop=608:1080:560:0")
         if TH["hook"] == "tv": return Clip(s["clip"], s["ss"], D, 840, 472)
+        if TH["hook"] == "tablet": return Clip(s["clip"], s["ss"], D, 880, 620)
+        if TH["hook"] == "laptop": return Clip(s["clip"], s["ss"], D, 880, 520)
         return Clip(s["clip"], s["ss"], D, 640, 360)
     if s["kind"] == "versus": return None
     return Clip(s["clip"], s["ss"], D, 960 if s.get("card") == "video" else 800, 540 if s.get("card") == "video" else 450)
@@ -327,6 +346,22 @@ def draw_scene(i, t, clip, img):
             d.rounded_rectangle([tv.width // 2 - 170, fr.height + 118, tv.width // 2 + 170, fr.height + 146], radius=12, fill=(40, 40, 46, 255))
             d.ellipse([fr.width + 6, fr.height + 38, fr.width + 18, fr.height + 50], fill=ACC + (255,))
             paste_c(img, tv, W / 2, 880 + 80 * (1 - eo(p)), scale=0.7 + 0.3 * eback(p), alpha=p)
+        elif TH["hook"] == "tablet":  # tablette tenue en paysage, sans logo
+            tb = Image.new("RGBA", (fr.width + 76, fr.height + 76), (0, 0, 0, 0)); d = ImageDraw.Draw(tb)
+            d.rounded_rectangle([0, 0, tb.width - 1, tb.height - 1], radius=54, fill=(28, 28, 32, 255), outline=(78, 78, 86, 255), width=6)
+            tb.paste(fr, (38, 38))
+            d.ellipse([tb.width // 2 - 7, 14, tb.width // 2 + 7, 28], fill=(10, 10, 12, 255))
+            paste_c(img, tb, W / 2, 900 + 120 * (1 - eo(p)), scale=(0.82 + 0.18 * eback(p)) * 0.98, alpha=p, rot=-3 * (1 - eo(p)))
+        elif TH["hook"] == "laptop":  # PC portable, sans logo
+            lp = Image.new("RGBA", (fr.width + 220, fr.height + 120), (0, 0, 0, 0)); d = ImageDraw.Draw(lp)
+            x0 = 110 - 26
+            d.rounded_rectangle([x0, 0, x0 + fr.width + 52, fr.height + 64], radius=22, fill=(26, 26, 30, 255), outline=(78, 78, 86, 255), width=5)
+            lp.paste(fr, (x0 + 26, 32))
+            d.ellipse([lp.width // 2 - 5, 11, lp.width // 2 + 5, 21], fill=(10, 10, 12, 255))
+            yb = fr.height + 64
+            d.polygon([(x0 - 70, yb + 46), (x0 + fr.width + 52 + 70, yb + 46), (x0 + fr.width + 52, yb), (x0, yb)], fill=(58, 58, 64, 255))
+            d.rounded_rectangle([lp.width // 2 - 80, yb + 6, lp.width // 2 + 80, yb + 20], radius=6, fill=(40, 40, 46, 255))
+            paste_c(img, lp, W / 2, 900 + 100 * (1 - eo(p)), scale=0.8 + 0.2 * eback(p), alpha=p)
         else:
             for k, (rot, dx, dy) in enumerate([(-9, -60, -50), (6, 50, -10), (-1, 0, 40)]):
                 q = prog(t, 0.08 * k, 0.3)
@@ -346,7 +381,7 @@ def draw_scene(i, t, clip, img):
         main, sub = s["head"]; big = bool(sub)
         draw_head(img, t, main, sub, big)
         fr = clip.get(t); style = s.get("card", "polaroid")
-        c = card(fr, s.get("cap"), style)
+        c = card(fr, s.get("cap"), style, SPEC.get("badge", "● REPLAY"), SPEC.get("cap_sub", "Clash of Clans · attaque"))
         tags = s.get("tags", []); flow = s.get("flow", [])
         p = prog(t, 0.45 if big else 0.25, 0.35)
         if big:
