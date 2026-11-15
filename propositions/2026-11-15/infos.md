@@ -4,6 +4,10 @@ Montage : copie du montage des vidéos actuelles (tendance_*, accent rouge, fond
 
 **Titre YouTube** : Le Star Bonus change : butin x4 avec les Snacks ! #clashofclans #shorts
 
+**Miniature (validée à l'écran pour relecture)** : fond sombre à grille, « CLASH OF CLANS » gris, étiquette rouge « MISE À JOUR », « LE STAR BONUS X4 ? » en gros (X4 en jaune), snack Battle Bake incliné, tampon rouge « OFFICIEL », étiquette jaune « BUTIN, ÉTOILES, SNACKS ». Fichier : miniature.jpg.
+
+**Statut** : pas encore programmée, en attente du oui de Mikael sur la miniature et le titre.
+
 **Description** : Supercell refond le Star Bonus : les récompenses dépendent maintenant de ton niveau d'hôtel de ville. 2 étoiles = Snack Pack avec une Battle Bake, 5 étoiles = butin, minerai et un 2e Snack Pack. Battle Bake (butin x2/x3/x4), Loot Cart Lolly, Clan Castle Slice, Star Bonus Snack : tout est expliqué.
 Annonce officielle Supercell du 10 novembre 2026, mise à jour « plus tard ce mois-ci ».
 Rejoins la communauté Clash Center sur Discord, lien en bio.
