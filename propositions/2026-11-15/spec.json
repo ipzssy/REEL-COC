@@ -1,0 +1,12 @@
+{"out": "short.mp4", "accent": [165, 90, 255], "header": "CLASH OF CLANS",
+ "scenes": [
+  {"text": "Supercell change complètement le Star Bonus, et ça va te rapporter plus de butin.", "label": "MISE À JOUR", "big": [["STAR", "white"], ["BONUS", "accent"]], "stamp": "OFFICIEL", "images": ["c_starsnack.jpg", "c_bake4.jpg"]},
+  {"text": "Fini la ligue : maintenant, tes récompenses dépendent de ton niveau d'hôtel de ville.", "label": "NOUVEAUTÉ", "big": [["HÔTEL", "white"], ["DE VILLE", "accent"]], "stamp": "OFFICIEL", "images": ["c_starsnack.jpg", "c_cake.jpg"]},
+  {"text": "Deux étoiles, et tu gagnes un Snack Pack avec une Battle Bake dedans.", "label": "PALIER 1", "big": [["2 ÉTOILES", "accent"]], "stamp": "OFFICIEL", "images": ["c_bake3.jpg", "c_bake4.jpg"]},
+  {"text": "Cinq étoiles : du butin, du minerai, et un deuxième Snack Pack avec un snack magique au hasard.", "label": "PALIER 2", "big": [["5 ÉTOILES", "accent"]], "stamp": "OFFICIEL", "images": ["c_cake.jpg", "c_lolly.jpg", "c_slice.jpg"]},
+  {"text": "La Battle Bake multiplie ton butin par deux, trois ou quatre, sur ta prochaine attaque.", "label": "BATTLE BAKE", "big": [["BUTIN", "white"], ["X4", "accent"]], "stamp": "OFFICIEL", "images": ["c_bake4.jpg", "c_bake3.jpg"]},
+  {"text": "Le Loot Cart Lolly triple le butin de tes trois prochains chariots.", "label": "LOOT CART LOLLY", "big": [["CHARIOT", "white"], ["X3", "accent"]], "stamp": "OFFICIEL", "images": ["c_lolly.jpg"]},
+  {"text": "La Clan Castle Slice t'offre des renforts gratuits pendant trois combats.", "label": "CLAN CASTLE SLICE", "big": [["RENFORTS", "white"], ["GRATUITS", "accent"]], "stamp": "OFFICIEL", "images": ["c_slice.jpg"]},
+  {"text": "Et le Star Bonus Snack te donne un Star Bonus en plus, disponible quarante-huit heures après l'activation.", "label": "STAR BONUS SNACK", "big": [["BONUS", "white"], ["EN PLUS", "accent"]], "stamp": "OFFICIEL", "images": ["c_starsnack.jpg", "c_cake.jpg"]},
+  {"text": "Tu préfères la Battle Bake ou le Star Bonus Snack ? Dis-le en commentaire, et rejoins le Discord, lien en bio.", "gauge": true}
+ ]}
