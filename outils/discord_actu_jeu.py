@@ -71,6 +71,14 @@ for slug, nom, debut, fin, texte in EVENEMENTS:
         n += 1
 
 # B) annonces officielles du blog Supercell, traduites en français (service gratuit, repli sur l'anglais)
+def coupe(txt, n=470):
+    """Garde des phrases entières (le service gratuit limite la longueur)."""
+    if len(txt) <= n:
+        return txt
+    c = txt[:n]; i = max(c.rfind('. '), c.rfind('! '), c.rfind('? '))
+    return c[:i + 1] if i > 100 else c
+
+
 def traduire(txt):
     if not txt:
         return txt
@@ -112,7 +120,8 @@ try:
         titre, desc, img = re.sub(r'\s*[×x]\s*Clash of Clans\s*$', '', meta(page, 'og:title')), meta(page, 'og:description'), meta(page, 'og:image')
         if not titre:
             continue
-        titre_fr, desc_fr = traduire(titre), traduire(desc[:600])
+        desc = coupe(desc)
+        titre_fr, desc_fr = traduire(titre), traduire(desc)
         traduit = titre_fr is not None
         titre, desc = (titre_fr or titre), (desc_fr or desc)
         emb = {'title': '📰 ' + titre[:240], 'url': url, 'color': OR,
