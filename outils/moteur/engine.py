@@ -10,7 +10,7 @@ W, H = 1080, 1920
 BLACKF = "/usr/share/fonts/opentype/inter/InterDisplay-Black.otf"
 BOLDF = "/usr/share/fonts/opentype/inter/Inter-Bold.otf"
 XBF = "/usr/share/fonts/opentype/inter/Inter-ExtraBold.otf"
-WHITE = (245, 245, 245); RED = (236, 38, 56); GREY = (95, 95, 100); BG = (11, 11, 14); PAPER = (250, 250, 248); INK = (10, 10, 10)
+WHITE = (245, 245, 245); YEL = (255, 214, 0); RED = (236, 38, 56); GREY = (95, 95, 100); BG = (11, 11, 14); PAPER = (250, 250, 248); INK = (10, 10, 10)
 BANK = os.path.join(HERE, "..", "..", "banque")
 SC = SPEC["scenes"]
 # ---- per-video variation: same family, different look
@@ -242,6 +242,23 @@ def subtitles(img, i, t):
         end = groups[gi + 1][0][0] if gi + 1 < len(groups) else SCENES[i]
         if grp[0][0] - 0.05 <= t < end: g = grp
     if g is None: return
+    if TH["subs"] == "pop":
+        d = ImageDraw.Draw(img); sz = 92
+        while True:
+            f = F(BLACKF, sz); sp = f.getlength(" ") * 1.7
+            ws = [f.getlength(w.upper()) * 1.08 for _, _, w in g]; tw = sum(ws) + sp * (len(g) - 1)
+            if tw < 960 or sz <= 50: break
+            sz -= 4
+        x = 515 - tw / 2
+        for (a, b, w), wl in zip(g, ws):
+            on = a <= t < b; said = t >= a
+            k = 1.0 + (0.22 * (1 - eo(prog(t, a, 0.14))) + 0.08 if on else 0.0)
+            col = RED if is_key(w) and said else (YEL if on else (WHITE if said else (150, 150, 155)))
+            fz = F(BLACKF, int(sz * k)); cx = x + wl / 2
+            d.text((cx + 5, 1436), w.upper(), font=fz, fill=(0, 0, 0), anchor="mm", stroke_width=9, stroke_fill=(0, 0, 0))
+            d.text((cx, 1430), w.upper(), font=fz, fill=col, anchor="mm", stroke_width=7, stroke_fill=(0, 0, 0))
+            x += wl + sp
+        return
     sz = 54; KB = SPEC.get("big_keys", 1.0)
     while True:
         f = F(XBF, sz); fk = F(XBF, int(sz * KB)); sp = f.getlength(" ")
@@ -296,7 +313,7 @@ class Clip:
         vf = (crop + "," if crop else "") + f"scale={w}:{h}:flags=lanczos,unsharp=5:5:0.4"
         self.w, self.h = w, h
         self.p = subprocess.Popen(["ffmpeg", "-loglevel", "quiet", "-ss", str(ss), "-t", str(dur + 0.5),
-                                   "-i", os.path.join(BANK, CLIPS[key] + ".mp4"), "-vf", vf, "-r", "30", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"],
+                                   "-i", (os.path.join("img", key[4:]) if str(key).startswith("vid:") else os.path.join(BANK, CLIPS[key] + ".mp4")), "-vf", vf, "-r", "30", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"],
                                   stdout=subprocess.PIPE)
         self.idx = -1; self.cur = Image.new("RGB", (w, h), (0, 0, 0))
     def get(self, t):
@@ -313,7 +330,7 @@ class Clip:
 def setup(i):
     s = SC[i]; D = SCENES[i]
     if s["kind"] == "hook":
-        if TH["hook"] == "game": return Clip(s["clip"], s["ss"], D, 1040, 660)
+        if TH["hook"] == "game": return Clip(s["clip"], s["ss"], D, 1040, s.get("hook_h", 660), s.get("crop"))
         if TH["hook"] == "phone": return Clip(s["clip"], s["ss"], D, 540, 960, "crop=608:1080:560:0")
         if TH["hook"] == "tv": return Clip(s["clip"], s["ss"], D, 840, 472)
         if TH["hook"] == "tablet": return Clip(s["clip"], s["ss"], D, 880, 620)

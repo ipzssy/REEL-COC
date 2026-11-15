@@ -18,3 +18,6 @@ Rejoins la communauté Clash Center sur Discord, lien en bio.
 
 **Sources** : https://supercell.com/en/games/clashofclans/blog/news/stars-snacks-and-showing-off/ ; https://www.sportsdunia.com/gaming/clash-of-clans-new-magic-snacks-annonunced ; https://www.sportsdunia.com/gaming/clash-of-clans-th19-november-2026-update
 Images : icônes du wiki Fandom Clash of Clans.
+
+## Version B (script « STOP ! », 25 s) — short_B.mp4 / spec_B.json
+Accroche : vrai écran de victoire du jeu en vidéo (wiki Fandom, recadré sans les pseudos), « GIGA UPDATE » + « X4 BUTIN ? ». Sous-titres gros mot par mot (`"subs": "pop"` : mot actif jaune, mots clés rouges). Voix plus rapide (×1,1). Fin : « Entre la Battle Bake et le Star Bonus Snack, tu choisis quoi ? Dis-le en commentaire, le débat est ouvert ! Et rejoins le Discord, lien en bio. »
