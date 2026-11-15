@@ -9,7 +9,8 @@ import carte_actu
 SNEAK_ID_DEPART = 1571397676342313041     # les fuites déposées avant ce message ne sont jamais republiées
 PROPRIO = '649405632532971524'
 BLOG = 'https://supercell.com/en/games/clashofclans/blog/'
-BLOG_DEPUIS = datetime.date(2026, 11, 15)  # pas de rattrapage des anciens articles
+BLOG_DEPUIS = datetime.date.fromisoformat(os.environ.get('BLOG_DEPUIS') or '2026-11-15')  # pas de rattrapage des anciens articles
+APERCU = os.environ.get('APERCU') == '1'   # test : affiche sans publier
 OR, VIOLET = 0xF5B000, 0x9B59B6
 MAX = {'evt': 3, 'blog': 3, 'leak': 4}
 
@@ -69,7 +70,27 @@ for slug, nom, debut, fin, texte in EVENEMENTS:
                                    'footer': {'text': 'Actu Clash • evt:' + slug}}], 'allowed_mentions': {'parse': []}}, fichier=img)
         n += 1
 
-# B) annonces officielles du blog Supercell (titre et résumé d'origine, en anglais)
+# B) annonces officielles du blog Supercell, traduites en français (service gratuit, repli sur l'anglais)
+def traduire(txt):
+    if not txt:
+        return txt
+    try:
+        r = requests.get('https://translate.googleapis.com/translate_a/single', timeout=30,
+                         params={'client': 'gtx', 'sl': 'en', 'tl': 'fr', 'dt': 't', 'q': txt})
+        r.raise_for_status()
+        out = ''.join(seg[0] for seg in r.json()[0] if seg and seg[0])
+        if out.strip():
+            return out.strip()
+    except Exception as e:
+        print('Traduction (service 1) indisponible :', e)
+    try:
+        r = requests.get('https://api.mymemory.translated.net/get', params={'q': txt[:480], 'langpair': 'en|fr'}, timeout=30)
+        out = r.json()['responseData']['translatedText']
+        if out and 'MYMEMORY WARNING' not in out.upper():
+            return out
+    except Exception as e:
+        print('Traduction (service 2) indisponible :', e)
+    return None
 UA = {'User-Agent': 'Mozilla/5.0 (compatible; ClashCenterBot)'}
 def meta(page, nom):
     m = re.search(r'<meta[^>]+(?:property|name)=["\']%s["\'][^>]+content=["\']([^"\']*)' % re.escape(nom), page, re.I) or \
@@ -90,9 +111,15 @@ try:
         titre, desc, img = meta(page, 'og:title'), meta(page, 'og:description'), meta(page, 'og:image')
         if not titre:
             continue
+        titre_fr, desc_fr = traduire(titre), traduire(desc[:600])
+        traduit = titre_fr is not None
+        titre, desc = (titre_fr or titre), (desc_fr or desc)
         emb = {'title': '📰 ' + titre[:240], 'url': url, 'color': OR,
-               'description': (desc[:600] + '\n\n' if desc else '') + '🔗 Article officiel de Supercell (en anglais)',
+               'description': (desc[:900] + '\n\n' if desc else '') + ('🔗 Article officiel de Supercell • traduit en français' if traduit else '🔗 Article officiel de Supercell (en anglais)'),
                'footer': {'text': 'Actu Clash • source : blog officiel Supercell'}}
+        if APERCU:
+            print('APERCU', url, d, '|', emb['title'], '|', emb['description'][:300].replace('\n', ' '))
+            continue
         fichier = None
         if img:
             emb['image'] = {'url': img}

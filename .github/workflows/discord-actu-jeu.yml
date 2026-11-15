@@ -7,6 +7,12 @@ on:
       refaire:
         description: 'Slug de l événement à republier avec image (ex: wastelands)'
         default: ''
+      apercu:
+        description: 'Test sans publier (1) avec depuis (AAAA-MM-JJ)'
+        default: ''
+      depuis:
+        description: 'Date minimale des articles (test)'
+        default: ''
 jobs:
   actu-jeu:
     runs-on: ubuntu-latest
@@ -17,3 +23,5 @@ jobs:
         env:
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
           REFAIRE: ${{ github.event.inputs.refaire }}
+          APERCU: ${{ github.event.inputs.apercu }}
+          BLOG_DEPUIS: ${{ github.event.inputs.depuis }}
