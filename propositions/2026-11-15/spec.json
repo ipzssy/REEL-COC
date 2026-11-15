@@ -1,7 +1,7 @@
 {
  "n": 0,
  "theme": {
-  "hook": "laptop"
+  "hook": "game"
  },
  "badge": "● NOUVEAU",
  "cap_sub": "Clash of Clans · mise à jour",
@@ -10,12 +10,15 @@
    "kind": "hook",
    "text": "Ton Star Bonus va te rapporter jusqu'à quatre fois plus de butin. Regarde.",
    "top": "CLASH OF CLANS",
-   "clip": "img:bake4.jpg",
+   "clip": "img:recu.jpg",
    "ss": 0,
    "stamp": [
-    "quatre",
-    "X4"
-   ]
+    "regarde",
+    "OFFICIEL"
+   ],
+   "alert": "ÉNORME CHANGEMENT",
+   "big": "X4 DE BUTIN ?",
+   "big_red": "X4"
   },
   {
    "kind": "std",
@@ -117,6 +120,18 @@
    "cword": "commentaire"
   }
  ],
- "hook_scale": 1.18,
- "card_scale": 1.1
+ "card_scale": 1.1,
+ "bg_image": "recu.jpg",
+ "big_keys": 1.4,
+ "keys": [
+  "butin",
+  "officiel",
+  "quatre",
+  "étoiles",
+  "hôtel",
+  "ligue",
+  "hasard",
+  "mois-ci",
+  "battle"
+ ]
 }

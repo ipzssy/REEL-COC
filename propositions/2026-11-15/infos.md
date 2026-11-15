@@ -1,6 +1,6 @@
 # Proposition du 15/11/2026 — Star Bonus refondu + Magic Snacks (À VALIDER)
 
-Montage : copie du montage des vidéos actuelles (tendance_*, accent rouge, fond grille, cartes « replay », tampons cercle, sous-titres karaoké), 6 scènes, 28 s. Écran d'ouverture sur PC portable alu façon Mac, sans logo (`"theme": {"hook": "laptop"}`, ou `"tablet"` pour une tablette). Rendu : `bash outils/moteur/build.sh <dossier> short.mp4` (dossier avec spec.json, img/, voice/v0..v5.wav).
+Montage : copie du montage des vidéos actuelles (tendance_*, accent rouge, fond grille, cartes « replay », tampons cercle, sous-titres karaoké), 6 scènes, 28 s. Ouverture « choc » : capture du jeu en zoom très rapide, alerte rouge « ÉNORME CHANGEMENT » et « X4 DE BUTIN ? » dès la 1re image (`"theme": {"hook": "game"}`). Fond = capture du jeu floutée (`"bg_image"`), mots clés grossis dans les sous-titres (`"big_keys"`, `"keys"`). Rendu : `bash outils/moteur/build.sh <dossier> short.mp4` (dossier avec spec.json, img/, voice/v0..v5.wav).
 
 **Titre YouTube** : Le Star Bonus change : butin x4 avec les Snacks ! #clashofclans #shorts
 

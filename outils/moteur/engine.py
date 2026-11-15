@@ -36,6 +36,7 @@ for s in SC:
     for k in ("qword", "cword"):
         if s.get(k): KEY.add(s[k])
 KEY |= {"erreur", "solution", "résultat", "commentaire", "clash", "clans"}
+KEY |= set(SPEC.get("keys", []))
 
 _fc = {}
 def F(path, sz):
@@ -118,7 +119,14 @@ def make_bg():
     v = Image.new("L", (W, H), 0); ImageDraw.Draw(v).ellipse([-300, -200, W + 300, H + 200], fill=255)
     v = v.filter(ImageFilter.GaussianBlur(220))
     return Image.composite(im, Image.new("RGB", (W, H), (0, 0, 0)), v)
-BGIM = make_bg()
+def make_bg_image(path):
+    im = Image.open(os.path.join("img", path)).convert("RGB")
+    sc = max(W / im.width, H / im.height); im = im.resize((int(im.width * sc) + 1, int(im.height * sc) + 1), Image.LANCZOS)
+    im = im.crop(((im.width - W) // 2, (im.height - H) // 2, (im.width - W) // 2 + W, (im.height - H) // 2 + H))
+    im = im.filter(ImageFilter.GaussianBlur(45)).point(lambda v: int(v * 0.17))
+    v = Image.new("L", (W, H), 0); ImageDraw.Draw(v).ellipse([-300, -200, W + 300, H + 200], fill=255)
+    return Image.composite(im, Image.new("RGB", (W, H), (0, 0, 0)), v.filter(ImageFilter.GaussianBlur(220)))
+BGIM = make_bg_image(SPEC["bg_image"]) if SPEC.get("bg_image") else make_bg()
 
 # ------------------------------------------------------------------ elements
 _tc = {}
@@ -234,10 +242,10 @@ def subtitles(img, i, t):
         end = groups[gi + 1][0][0] if gi + 1 < len(groups) else SCENES[i]
         if grp[0][0] - 0.05 <= t < end: g = grp
     if g is None: return
-    sz = 54
+    sz = 54; KB = SPEC.get("big_keys", 1.0)
     while True:
-        f = F(XBF, sz); sp = f.getlength(" ")
-        widths = [f.getlength(w) for _, _, w in g]; tw = sum(widths) + sp * (len(g) - 1)
+        f = F(XBF, sz); fk = F(XBF, int(sz * KB)); sp = f.getlength(" ")
+        widths = [(fk if KB > 1 and is_key(w) else f).getlength(w) + (sp if KB > 1 and is_key(w) else 0) for _, _, w in g]; tw = sum(widths) + sp * (len(g) - 1)
         if tw < 980 or sz <= 36: break
         sz -= 2
     x = 515 - tw / 2; d = ImageDraw.Draw(img)
@@ -245,6 +253,12 @@ def subtitles(img, i, t):
         if TH["subs"] == "box" and a <= t < b:
             d.rounded_rectangle([x - 12, 1430 - 42, x + wl + 12, 1430 + 40], radius=12, fill=ACC)
             d.text((x, 1430), w, font=f, fill=ACC_FG, anchor="lm")
+        elif KB > 1 and is_key(w):  # mot clé : plus gros, petit pop quand il est prononcé
+            k = KB * (1 + 0.25 * (1 - eo(prog(t, a, 0.16)))) if t >= a else KB
+            fz = F(XBF, int(sz * k)); cx = x + wl / 2
+            col = RED if t >= a else GREY
+            d.text((cx + 4, 1434), w, font=fz, fill=(0, 0, 0), anchor="mm", stroke_width=4, stroke_fill=(0, 0, 0))
+            d.text((cx, 1430), w, font=fz, fill=col, anchor="mm", stroke_width=3, stroke_fill=(0, 0, 0))
         else:
             col = ((RED if is_key(w) else WHITE) if TH["subs"] == "karaoke" else WHITE) if t >= a else GREY
             d.text((x + 3, 1434), w, font=f, fill=(0, 0, 0), anchor="lm")
@@ -299,6 +313,7 @@ class Clip:
 def setup(i):
     s = SC[i]; D = SCENES[i]
     if s["kind"] == "hook":
+        if TH["hook"] == "game": return Clip(s["clip"], s["ss"], D, 1040, 660)
         if TH["hook"] == "phone": return Clip(s["clip"], s["ss"], D, 540, 960, "crop=608:1080:560:0")
         if TH["hook"] == "tv": return Clip(s["clip"], s["ss"], D, 840, 472)
         if TH["hook"] == "tablet": return Clip(s["clip"], s["ss"], D, 880, 620)
@@ -330,7 +345,29 @@ def draw_scene(i, t, clip, img):
     s = SC[i]; kind = s["kind"]; sh = [0.0, 0.0]
     def addsh(v):
         sh[0] += v[0]; sh[1] += v[1]
-    if kind == "hook":
+    if kind == "hook" and TH["hook"] == "game":
+        # choc visuel dès la 1re image : capture du jeu en zoom très rapide + alerte rouge + gros texte
+        fr = clip.get(t); z = 1.45 - 0.45 * eo(prog(t, 0.0, 0.22))
+        sc_ = Image.new("RGBA", (fr.width + 16, fr.height + 16), RED + (255,)); sc_.paste(fr, (8, 8))
+        paste_c(img, sc_, W / 2, 790, scale=z)
+        blink = 1.0 if (t > 1.2 or int(t / 0.18) % 2 == 0) else 0.55
+        al = tag(s.get("alert", "ÉNORME CHANGEMENT"), RED, WHITE, 64)
+        paste_c(img, al, W / 2, 330, scale=1.25 - 0.25 * eo(prog(t, 0.0, 0.15)), alpha=blink)
+        bz = 1.5 - 0.5 * eback(prog(t, 0.0, 0.25)); big = s.get("big", "X4 DE BUTIN ?"); red = s.get("big_red", "")
+        if red and big.startswith(red):  # premier mot en rouge
+            a1, a2 = title(red, 210, RED), title(big[len(red):].strip(), 210)
+            row = Image.new("RGBA", (a1.width + a2.width + 20, max(a1.height, a2.height)), (0, 0, 0, 0)); row.paste(a1, (0, 0), a1); row.paste(a2, (a1.width + 20, 0), a2)
+            if row.width > 1000: row = row.resize((1000, int(row.height * 1000 / row.width)), Image.LANCZOS)
+            paste_c(img, row, W / 2, 1300, scale=bz)
+        else:
+            paste_c(img, title(big, 210, maxw=1000), W / 2, 1300, scale=bz)
+        if s.get("stamp"):
+            w0, txt = s["stamp"]; ts = wt(i, w0)
+            if t >= ts:
+                q = prog(t, ts, 0.14)
+                paste_c(img, stamp(txt), W / 2 + 230, 980, scale=2.0 - eo(q), rot=12, alpha=min(1, 2 * q)); addsh(shake_at(t, ts, 22))
+        addsh(shake_at(t, 0.0, 30, 0.35))
+    elif kind == "hook":
         q = prog(t, 0.2, 0.22)
         paste_c(img, title(s.get("top", "CLASH OF CLANS"), 120), W / 2, 210, alpha=q, scale=1.15 - 0.15 * eo(q))
         p = prog(t, 0.0, 0.35)
