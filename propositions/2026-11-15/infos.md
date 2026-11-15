@@ -1,6 +1,6 @@
 # Proposition du 15/11/2026 — Star Bonus refondu + Magic Snacks (À VALIDER)
 
-Montage : ancien moteur `outils/moteur` (style « gel »), écran d'ouverture sur tablette (`"theme": {"hook": "tablet"}`, option `"laptop"` pour un PC portable). Rendu : `bash outils/moteur/build.sh <dossier> short.mp4` avec `img/` et `voice/v0.wav` à `v8.wav`.
+Montage : copie du montage des vidéos actuelles (tendance_*, accent rouge, fond grille, cartes « replay », tampons cercle, sous-titres karaoké), 6 scènes, 28 s. Écran d'ouverture sur tablette au lieu du téléphone (`"theme": {"hook": "tablet"}`, ou `"laptop"` pour un PC portable). Rendu : `bash outils/moteur/build.sh <dossier> short.mp4` (dossier avec spec.json, img/, voice/v0..v5.wav).
 
 **Titre YouTube** : Le Star Bonus change : butin x4 avec les Snacks ! #clashofclans #shorts
 
