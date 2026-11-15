@@ -2,9 +2,9 @@
 
 Montage : copie du montage des vidéos actuelles (tendance_*, accent rouge, fond grille, cartes « replay », tampons cercle, sous-titres karaoké), 6 scènes, 28 s. Ouverture « choc » : capture du jeu en zoom très rapide, alerte rouge « ÉNORME CHANGEMENT » et « X4 DE BUTIN ? » dès la 1re image (`"theme": {"hook": "game"}`). Fond = capture du jeu floutée (`"bg_image"`), mots clés grossis dans les sous-titres (`"big_keys"`, `"keys"`). Rendu : `bash outils/moteur/build.sh <dossier> short.mp4` (dossier avec spec.json, img/, voice/v0..v5.wav).
 
-**Titre YouTube** : Le Star Bonus change : butin x4 avec les Snacks ! #clashofclans #shorts
+**Titre YouTube** : Ce que Supercell change au Star Bonus (et les nouveaux snacks) #clashofclans #shorts
 
-**Miniature (validée à l'écran pour relecture)** : fond sombre à grille, « CLASH OF CLANS » gris, étiquette rouge « MISE À JOUR », « LE STAR BONUS X4 ? » en gros (X4 en jaune), snack Battle Bake incliné, tampon rouge « OFFICIEL », étiquette jaune « BUTIN, ÉTOILES, SNACKS ». Fichier : miniature.jpg.
+**Miniature** : générée avec `outils/miniatures.py` (build_thumb, spec « snacks ») : « STAR BONUS ? » en haut, Battle Bake et Loot Cart Lolly au centre, « BUTIN X4 » en rouge, « NOUVEAUTÉ OFFICIELLE » en bas. Fichier : miniature.jpg.
 
 **Statut** : pas encore programmée, en attente du oui de Mikael sur la miniature et le titre.
 
