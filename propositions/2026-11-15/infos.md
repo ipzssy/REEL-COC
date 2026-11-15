@@ -1,4 +1,4 @@
-# Proposition du 15/11/2026 — Star Bonus refondu + Magic Snacks (À VALIDER)
+# Proposition du 15/11/2026 — Star Bonus refondu + Magic Snacks (À VALIDER) — version retenue : B (short.mp4 / spec.json) ; ancienne version A dans short_A.mp4 / spec_A.json
 
 Montage : copie du montage des vidéos actuelles (tendance_*, accent rouge, fond grille, cartes « replay », tampons cercle, sous-titres karaoké), 6 scènes, 28 s. Ouverture « choc » : capture du jeu en zoom très rapide, alerte rouge « ÉNORME CHANGEMENT » et « X4 DE BUTIN ? » dès la 1re image (`"theme": {"hook": "game"}`). Fond = capture du jeu floutée (`"bg_image"`), mots clés grossis dans les sous-titres (`"big_keys"`, `"keys"`). Rendu : `bash outils/moteur/build.sh <dossier> short.mp4` (dossier avec spec.json, img/, voice/v0..v5.wav).
 
@@ -19,5 +19,5 @@ Rejoins la communauté Clash Center sur Discord, lien en bio.
 **Sources** : https://supercell.com/en/games/clashofclans/blog/news/stars-snacks-and-showing-off/ ; https://www.sportsdunia.com/gaming/clash-of-clans-new-magic-snacks-annonunced ; https://www.sportsdunia.com/gaming/clash-of-clans-th19-november-2026-update
 Images : icônes du wiki Fandom Clash of Clans.
 
-## Version B (script « STOP ! », 25 s) — short_B.mp4 / spec_B.json
+## Version B retenue (script « STOP ! », 25 s) — short.mp4 / spec.json
 Accroche : vrai écran de victoire du jeu en vidéo (wiki Fandom, recadré sans les pseudos), « GIGA UPDATE » + « X4 BUTIN ? ». Sous-titres gros mot par mot (`"subs": "pop"` : mot actif jaune, mots clés rouges). Voix plus rapide (×1,1). Fin : « Entre la Battle Bake et le Star Bonus Snack, tu choisis quoi ? Dis-le en commentaire, le débat est ouvert ! Et rejoins le Discord, lien en bio. »
