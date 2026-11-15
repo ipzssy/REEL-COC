@@ -301,17 +301,27 @@ PUNCH = SPEC.get("punch", 0.6) or 0.6
 CLEAN = bool(SPEC.get("clean"))
 class Still:
     """Image fixe (img:<fichier> dans <video>/img/) animée en zoom lent, quand aucun clip de gameplay n'existe."""
-    def __init__(self, name, dur, w, h, z0=1.0, z1=1.10):
+    def __init__(self, name, dur, w, h, z0=1.0, z1=1.10, move=None, hit=None):
+        self.move, self.hit = move, hit
         im = Image.open(os.path.join("img", name)).convert("RGB")
         sc = max(w / im.width, h / im.height)
         self.im = im.resize((int(im.width * sc) + 1, int(im.height * sc) + 1), Image.LANCZOS)
         self.w, self.h, self.dur, self.z0, self.z1 = w, h, max(dur, 0.1), z0, z1
     def get(self, t):
         # petits zooms : un cran de zoom rapide toutes les 0,9 s (en plus du zoom lent)
-        if SPEC.get("punch"):  # zoom-in sec puis zoom-out à chaque temps
-            k = int(t / PUNCH); z = 1.0 + 0.05 * cl(t / self.dur) + 0.17 * (1 - eo(prog(t - k * PUNCH, 0.0, PUNCH * 0.8)))
+        if self.move:  # un mouvement différent par scène + un seul coup de zoom sur le mot clé
+            fx = 0.5; z = 1.0
+            if self.move == "snap":  # arrive très zoomé et claque en place
+                z = 1.0 + 0.38 * (1 - eo(prog(t, 0.0, 0.25))) + 0.06 * cl(t / self.dur)
+            elif self.move in ("pan", "panr"):  # balayage rapide puis lent
+                z = 1.22; e = 0.7 * eo(prog(t, 0.0, 0.45)) + 0.3 * cl(t / self.dur)
+                fx = 0.32 + 0.36 * e if self.move == "pan" else 0.68 - 0.36 * e
+            elif self.move == "reveal":  # part de très près et recule
+                z = 1.55 - 0.5 * eo(prog(t, 0.0, 0.6))
+            if self.hit is not None and t >= self.hit:
+                z += 0.2 * (1 - eo(prog(t, self.hit, 0.35)))
             cw, ch = self.w / z, self.h / z
-            x0 = (self.im.width - cw) / 2; y0 = (self.im.height - ch) / 2
+            x0 = min(max(fx * self.im.width - cw / 2, 0), self.im.width - cw); y0 = (self.im.height - ch) / 2
             return self.im.transform((self.w, self.h), Image.EXTENT, (x0, y0, x0 + cw, y0 + ch), Image.BICUBIC)
         k = int(t / 0.9); f = eo(prog(t - k * 0.9, 0.0, 0.18))
         z = min(1.25, self.z0 + (self.z1 - self.z0) * cl(t / self.dur) + 0.045 * (k + f))
@@ -322,7 +332,7 @@ class Still:
 
 class Clip:
     def __new__(cls, key, ss, dur, w=960, h=540, crop=None):
-        if str(key).startswith("img:"): return Still(key[4:], dur, w, h)
+        if str(key).startswith("img:"): return Still(key[4:], dur, w, h, move=MOVE.get("move"), hit=MOVE.get("hit"))
         return super().__new__(cls)
     def __init__(self, key, ss, dur, w=960, h=540, crop=None):
         vf = (crop + "," if crop else "") + f"scale={w}:{h}:flags=lanczos,unsharp=5:5:0.4"
@@ -342,8 +352,10 @@ class Clip:
         try: self.p.stdout.close(); self.p.kill()
         except Exception: pass
 
+MOVE = {}
 def setup(i):
     s = SC[i]; D = SCENES[i]
+    MOVE.clear(); MOVE["move"] = s.get("move"); MOVE["hit"] = wt(i, s["hit"]) if s.get("hit") else None
     if s["kind"] == "hook":
         if TH["hook"] == "game": return Clip(s["clip"], s["ss"], D, 1040, s.get("hook_h", 660), s.get("crop"))
         if TH["hook"] == "phone": return Clip(s["clip"], s["ss"], D, 540, 960, "crop=608:1080:560:0")
@@ -555,8 +567,7 @@ def scene_events(i):
         else: ev(0.05, "ding")
         if s.get("stamp"): ev(wt(i, s["stamp"][0]), "stamp")
         for tg in s.get("tags", [])[:3] + s.get("flow", [])[:2]: ev(wt(i, tg[0]), "pop")
-        if SPEC.get("punch") and str(s.get("clip", "")).startswith("img:"):
-            for k in range(1, int(SCENES[i] / PUNCH)): ev(k * PUNCH, "pop")
+        if s.get("hit"): ev(wt(i, s["hit"]), "pop")
     else:
         ev(wt(i, s["w1"]), "pop"); ev(wt(i, s["w2"]), "pop"); ev(wt(i, s["qword"]), "boom"); ev(wt(i, s["cword"]) - 0.4, "ding")
     return E
