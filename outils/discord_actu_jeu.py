@@ -105,7 +105,8 @@ try:
         if n >= MAX['blog'] or deja(url) or deja(url.rstrip('/')):
             continue
         rp = requests.get(url, headers=UA, timeout=30); rp.encoding = 'utf-8'; page = rp.text
-        d = (meta(page, 'article:published_time') or (re.search(r'datetime=["\']?(20\d\d-\d\d-\d\d)', page) or re.search(r'\b(20\d\d-\d\d-\d\d)\b', page) or [None, ''])[1])[:10]
+        d = (meta(page, 'article:published_time') or (re.search(r'"publishDate"\s*:\s*"(20\d\d-\d\d-\d\d)', page) or [None, ''])[1])[:10]
+        print('article', url, d)
         if not d or datetime.date.fromisoformat(d) < BLOG_DEPUIS:
             continue
         titre, desc, img = re.sub(r'\s*[×x]\s*Clash of Clans\s*$', '', meta(page, 'og:title')), meta(page, 'og:description'), meta(page, 'og:image')
