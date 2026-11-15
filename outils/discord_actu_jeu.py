@@ -4,6 +4,7 @@ import os, re, sys, json, datetime, html, requests
 from zoneinfo import ZoneInfo
 sys.path.insert(0, os.path.dirname(__file__))
 from discord_commun import API, HDR, GUILD, salon, poster
+import carte_actu
 
 SNEAK_ID_DEPART = 1571397676342313041     # les fuites déposées avant ce message ne sont jamais republiées
 PROPRIO = '649405632532971524'
@@ -13,6 +14,17 @@ OR, VIOLET = 0xF5B000, 0x9B59B6
 MAX = {'evt': 3, 'blog': 3, 'leak': 4}
 
 D = datetime.date
+IMAGES = {  # images du wiki Clash of Clans par événement (les absentes sont ignorées proprement)
+    'wastelands': ['Scenery Wastelands Scenery.png'],
+    'treasure-hunt': ['Treasure Hunt UI.png'],
+    'snackable': ['Avatar Super Yeti.png'],
+    'clan-games': ['Clangames.png.png'],
+    'fully-forged': ['Avatar Hero Barbarian King.png', 'Avatar Hero Archer Queen.png'],
+}
+MOIS = ['', 'janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.']
+def dates(a, b):
+    return f"{a.day} {MOIS[a.month]} → {b.day} {MOIS[b.month]}"
+
 EVENEMENTS = [  # slug, nom, début, fin, texte (source : saison de novembre 2026 « Clash of Titans »)
     ('wastelands', 'Retour des cosmétiques Wastelands', D(2026, 11, 15), D(2026, 11, 30),
      "Les skins de héros et le décor **Wastelands** reviennent dans la boutique ! **5 skins et 1 décor** purement cosmétiques pour changer le look de ton village."),
@@ -38,15 +50,23 @@ for m in recent:
 def deja(tag):
     return any(tag in v for v in vus if v)
 
+bot_id = requests.get(f'{API}/users/@me', headers=HDR, timeout=30).json()['id']
 aujourdhui = datetime.datetime.now(ZoneInfo('Europe/Paris')).date()
 n = 0
 # A) événements du jeu : le jour du début (ou le lendemain si manqué), jamais s'ils sont finis
 for slug, nom, debut, fin, texte in EVENEMENTS:
     if n >= MAX['evt']:
         break
-    if debut <= aujourdhui <= min(fin, debut + datetime.timedelta(days=1)) and not deja('evt:' + slug):
+    refaire = os.environ.get('REFAIRE', '') == slug
+    if debut <= aujourdhui <= min(fin, debut + datetime.timedelta(days=1)) and (refaire or not deja('evt:' + slug)):
+        if refaire:  # supprime l'ancienne version (message du bot) avant de la republier avec image
+            for m in recent:
+                if any('evt:' + slug in (e.get('footer') or {}).get('text', '') for e in m.get('embeds', [])) and m['author']['id'] == bot_id:
+                    print('suppression ancienne version', requests.delete(f"{API}/channels/{canal}/messages/{m['id']}", headers=HDR, timeout=30).status_code)
+        img = carte_actu.carte(f'/tmp/evt_{slug}.jpg', 'Nouvel événement', nom, dates(debut, fin), IMAGES.get(slug, []))
         poster(canal, {'embeds': [{'title': '🗓️ Nouvel événement : ' + nom, 'description': texte, 'color': OR,
-                                   'footer': {'text': 'Actu Clash • evt:' + slug}}], 'allowed_mentions': {'parse': []}})
+                                   'image': {'url': 'attachment://miniature.jpg'},
+                                   'footer': {'text': 'Actu Clash • evt:' + slug}}], 'allowed_mentions': {'parse': []}}, fichier=img)
         n += 1
 
 # B) annonces officielles du blog Supercell (titre et résumé d'origine, en anglais)
@@ -73,9 +93,13 @@ try:
         emb = {'title': '📰 ' + titre[:240], 'url': url, 'color': OR,
                'description': (desc[:600] + '\n\n' if desc else '') + '🔗 Article officiel de Supercell (en anglais)',
                'footer': {'text': 'Actu Clash • source : blog officiel Supercell'}}
+        fichier = None
         if img:
             emb['image'] = {'url': img}
-        poster(canal, {'embeds': [emb], 'allowed_mentions': {'parse': []}})
+        else:
+            fichier = carte_actu.carte('/tmp/blog.jpg', 'Annonce officielle', titre, '')
+            emb['image'] = {'url': 'attachment://miniature.jpg'}
+        poster(canal, {'embeds': [emb], 'allowed_mentions': {'parse': []}}, fichier=fichier)
         n += 1
 except Exception as e:
     print('Blog indisponible :', e)
