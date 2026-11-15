@@ -1,0 +1,12 @@
+name: Salon sneak-peek
+on:
+  workflow_dispatch:
+jobs:
+  salon:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q requests
+      - run: python outils/discord_salon_sneak.py
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
