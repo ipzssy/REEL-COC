@@ -1,0 +1,14 @@
+name: Actu jeu Discord
+on:
+  schedule:
+    - cron: '31 */3 * * *'   # toutes les 3 heures
+  workflow_dispatch:
+jobs:
+  actu-jeu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q requests
+      - run: python outils/discord_actu_jeu.py
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
