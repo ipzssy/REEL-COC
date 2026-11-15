@@ -1,4 +1,4 @@
-{"n": 0, "theme": {"hook": "tablet"}, "badge": "● NOUVEAU", "cap_sub": "Clash of Clans · mise à jour",
+{"n": 0, "theme": {"hook": "laptop"}, "badge": "● NOUVEAU", "cap_sub": "Clash of Clans · mise à jour",
  "scenes": [
   {"kind": "hook", "text": "Ton Star Bonus va te rapporter jusqu'à quatre fois plus de butin. Regarde.", "top": "CLASH OF CLANS", "clip": "img:bake4.jpg", "ss": 0, "stamp": ["quatre", "X4"]},
   {"kind": "std", "text": "Fini la ligue : tes récompenses dépendent maintenant de ton hôtel de ville.", "head": ["FINI", "LA LIGUE"], "clip": "img:ancien.jpg", "ss": 0, "card": "video", "cap": "L'ancien Star Bonus", "tags": [["hôtel", "SELON TON HDV", "r"]]},

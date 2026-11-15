@@ -300,7 +300,7 @@ def setup(i):
         if TH["hook"] == "phone": return Clip(s["clip"], s["ss"], D, 540, 960, "crop=608:1080:560:0")
         if TH["hook"] == "tv": return Clip(s["clip"], s["ss"], D, 840, 472)
         if TH["hook"] == "tablet": return Clip(s["clip"], s["ss"], D, 880, 620)
-        if TH["hook"] == "laptop": return Clip(s["clip"], s["ss"], D, 880, 520)
+        if TH["hook"] == "laptop": return Clip(s["clip"], s["ss"], D, 860, 538)
         return Clip(s["clip"], s["ss"], D, 640, 360)
     if s["kind"] == "versus": return None
     return Clip(s["clip"], s["ss"], D, 960 if s.get("card") == "video" else 800, 540 if s.get("card") == "video" else 450)
@@ -352,15 +352,20 @@ def draw_scene(i, t, clip, img):
             tb.paste(fr, (38, 38))
             d.ellipse([tb.width // 2 - 7, 14, tb.width // 2 + 7, 28], fill=(10, 10, 12, 255))
             paste_c(img, tb, W / 2, 900 + 120 * (1 - eo(p)), scale=(0.82 + 0.18 * eback(p)) * 0.98, alpha=p, rot=-3 * (1 - eo(p)))
-        elif TH["hook"] == "laptop":  # PC portable, sans logo
-            lp = Image.new("RGBA", (fr.width + 220, fr.height + 120), (0, 0, 0, 0)); d = ImageDraw.Draw(lp)
-            x0 = 110 - 26
-            d.rounded_rectangle([x0, 0, x0 + fr.width + 52, fr.height + 64], radius=22, fill=(26, 26, 30, 255), outline=(78, 78, 86, 255), width=5)
-            lp.paste(fr, (x0 + 26, 32))
-            d.ellipse([lp.width // 2 - 5, 11, lp.width // 2 + 5, 21], fill=(10, 10, 12, 255))
-            yb = fr.height + 64
-            d.polygon([(x0 - 70, yb + 46), (x0 + fr.width + 52 + 70, yb + 46), (x0 + fr.width + 52, yb), (x0, yb)], fill=(58, 58, 64, 255))
-            d.rounded_rectangle([lp.width // 2 - 80, yb + 6, lp.width // 2 + 80, yb + 20], radius=6, fill=(40, 40, 46, 255))
+        elif TH["hook"] == "laptop":  # PC portable façon ultrabook alu, sans logo
+            bz, top = 22, 30
+            sw, shh = fr.width + 2 * bz, fr.height + top + bz
+            lp = Image.new("RGBA", (sw + 200, shh + 70), (0, 0, 0, 0)); d = ImageDraw.Draw(lp)
+            x0 = 100
+            d.rounded_rectangle([x0 - 4, -0, x0 + sw + 4, shh + 4], radius=30, fill=(170, 172, 178, 255))
+            d.rounded_rectangle([x0, 4, x0 + sw, shh], radius=26, fill=(8, 8, 10, 255))
+            lp.paste(fr, (x0 + bz, top))
+            d.rounded_rectangle([lp.width // 2 - 70, 4, lp.width // 2 + 70, top - 4], radius=10, fill=(8, 8, 10, 255))
+            d.ellipse([lp.width // 2 - 4, 10, lp.width // 2 + 4, 18], fill=(30, 30, 36, 255))
+            yb = shh + 4
+            d.polygon([(x0 - 90, yb + 26), (x0 + sw + 90, yb + 26), (x0 + sw + 40, yb), (x0 - 40, yb)], fill=(196, 198, 204, 255))
+            d.rounded_rectangle([x0 - 90, yb + 24, x0 + sw + 90, yb + 44], radius=10, fill=(150, 152, 158, 255))
+            d.rounded_rectangle([lp.width // 2 - 90, yb + 2, lp.width // 2 + 90, yb + 12], radius=5, fill=(160, 162, 168, 255))
             paste_c(img, lp, W / 2, 900 + 100 * (1 - eo(p)), scale=0.8 + 0.2 * eback(p), alpha=p)
         else:
             for k, (rot, dx, dy) in enumerate([(-9, -60, -50), (6, 50, -10), (-1, 0, 40)]):
