@@ -1,14 +1,18 @@
 # Crée le salon privé 🎞️┃sneak-peek (staff) : le propriétaire y dépose les vidéos/photos sneak peek, le bot les lit.
-import os, sys, requests
+import os, sys, unicodedata, requests
 sys.path.insert(0, os.path.dirname(__file__))
 from discord_commun import API, HDR, GUILD
+
+def norm(t):
+    t = unicodedata.normalize('NFKD', unicodedata.normalize('NFKC', t))
+    return ''.join(c for c in t if not unicodedata.combining(c)).lower()
 
 VOIR, ECRIRE, LIENS, FICHIERS, HISTO, SLASH = 1024, 2048, 16384, 32768, 65536, 1 << 31
 NOM = '🎞️┃sneak-peek'
 me = requests.get(f'{API}/users/@me', headers=HDR, timeout=30).json()['id']
 g = requests.get(f'{API}/guilds/{GUILD}', headers=HDR, timeout=30).json()
 chans = requests.get(f'{API}/guilds/{GUILD}/channels', headers=HDR, timeout=30).json()
-staff = next((c['id'] for c in chans if c['type'] == 4 and 'staff' in c['name'].lower()), None)
+staff = next((c['id'] for c in chans if c['type'] == 4 and 'staff' in norm(c['name'])), None)
 for c in chans:
     if 'sneak-peek' in c['name']:
         print('Déjà là :', c['name'], c['id'], 'catégorie', c.get('parent_id'))
