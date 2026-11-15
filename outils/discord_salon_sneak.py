@@ -8,10 +8,14 @@ NOM = '🎞️┃sneak-peek'
 me = requests.get(f'{API}/users/@me', headers=HDR, timeout=30).json()['id']
 g = requests.get(f'{API}/guilds/{GUILD}', headers=HDR, timeout=30).json()
 chans = requests.get(f'{API}/guilds/{GUILD}/channels', headers=HDR, timeout=30).json()
+staff = next((c['id'] for c in chans if c['type'] == 4 and 'staff' in c['name'].lower()), None)
 for c in chans:
     if 'sneak-peek' in c['name']:
-        print('Déjà là :', c['name'], c['id']); sys.exit(0)
-staff = next((c['id'] for c in chans if c['type'] == 4 and 'STAFF' in c['name']), None)
+        print('Déjà là :', c['name'], c['id'], 'catégorie', c.get('parent_id'))
+        if staff and c.get('parent_id') != staff:
+            r = requests.patch(f"{API}/channels/{c['id']}", headers=HDR, timeout=30, json={'parent_id': staff})
+            print('Déplacé dans staff', r.status_code)
+        sys.exit(0)
 
 def ow(i, t, allow, deny=0):
     return {'id': i, 'type': t, 'allow': str(allow), 'deny': str(deny)}
