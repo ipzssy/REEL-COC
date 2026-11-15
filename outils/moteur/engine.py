@@ -266,7 +266,9 @@ class Still:
         self.im = im.resize((int(im.width * sc) + 1, int(im.height * sc) + 1), Image.LANCZOS)
         self.w, self.h, self.dur, self.z0, self.z1 = w, h, max(dur, 0.1), z0, z1
     def get(self, t):
-        z = self.z0 + (self.z1 - self.z0) * cl(t / self.dur)
+        # petits zooms : un cran de zoom rapide toutes les 0,9 s (en plus du zoom lent)
+        k = int(t / 0.9); f = eo(prog(t - k * 0.9, 0.0, 0.18))
+        z = min(1.25, self.z0 + (self.z1 - self.z0) * cl(t / self.dur) + 0.045 * (k + f))
         cw, ch = self.w / z, self.h / z
         x0 = (self.im.width - cw) / 2; y0 = (self.im.height - ch) / 2
         return self.im.transform((self.w, self.h), Image.EXTENT, (x0, y0, x0 + cw, y0 + ch), Image.BICUBIC)
@@ -323,6 +325,7 @@ def draw_head(img, t, main, sub, big):
     else:
         paste_c(img, title(main, 170), W / 2, 250 + 40 * (1 - eo(p)), scale=1.25 - 0.25 * eo(p), alpha=p)
 
+CS = SPEC.get("card_scale", 1.0)
 def draw_scene(i, t, clip, img):
     s = SC[i]; kind = s["kind"]; sh = [0.0, 0.0]
     def addsh(v):
@@ -366,7 +369,7 @@ def draw_scene(i, t, clip, img):
             d.polygon([(x0 - 90, yb + 26), (x0 + sw + 90, yb + 26), (x0 + sw + 40, yb), (x0 - 40, yb)], fill=(196, 198, 204, 255))
             d.rounded_rectangle([x0 - 90, yb + 24, x0 + sw + 90, yb + 44], radius=10, fill=(150, 152, 158, 255))
             d.rounded_rectangle([lp.width // 2 - 90, yb + 2, lp.width // 2 + 90, yb + 12], radius=5, fill=(160, 162, 168, 255))
-            paste_c(img, lp, W / 2, 900 + 100 * (1 - eo(p)), scale=0.8 + 0.2 * eback(p), alpha=p)
+            paste_c(img, lp, W / 2, 900 + 100 * (1 - eo(p)), scale=(0.8 + 0.2 * eback(p)) * SPEC.get("hook_scale", 1.0), alpha=p)
         else:
             for k, (rot, dx, dy) in enumerate([(-9, -60, -50), (6, 50, -10), (-1, 0, 40)]):
                 q = prog(t, 0.08 * k, 0.3)
@@ -391,14 +394,14 @@ def draw_scene(i, t, clip, img):
         p = prog(t, 0.45 if big else 0.25, 0.35)
         if big:
             if tags or flow:
-                enter(img, c, W / 2, 930, p, 0.8 if style == "video" else 0.9, 0 if style == "video" else 3)
+                enter(img, c, W / 2, 930, p, (0.8 if style == "video" else 0.9) * CS, 0 if style == "video" else 3)
                 ty = [1320, 1415]
             else:
-                enter(img, c, W / 2, 1040, p, 1.0, 2 if style == "polaroid" else 0)
+                enter(img, c, W / 2, 1040, p, CS, 2 if style == "polaroid" else 0)
                 ty = []
             sy = 1010
         else:
-            enter(img, c, W / 2, 760, p, 1.0, 0 if style == "video" else -2)
+            enter(img, c, W / 2, 760, p, CS, 0 if style == "video" else -2)
             ty = [1190, 1282, 1374]; sy = 1250
         if s.get("result"): addsh(shake_at(t, 0.0, 24, 0.3))
         for k, tg in enumerate(tags[:len(ty)]):
