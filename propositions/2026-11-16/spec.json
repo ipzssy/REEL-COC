@@ -1,0 +1,11 @@
+{"out": "short.mp4", "accent": [165, 90, 255], "header": "CLASH OF CLANS",
+ "scenes": [
+  {"text": "Cette défense n'attaque jamais... et pourtant, elle détruit ton armée !", "label": "HDV 19", "big": [["N'ATTAQUE", "white"], ["JAMAIS", "accent"]], "stamp": "OFFICIEL", "images": ["spiky.jpg"]},
+  {"text": "Voici la Spiky Tower, la nouvelle défense de l'hôtel de ville 19.", "label": "NOUVEAUTÉ", "big": [["SPIKY", "white"], ["TOWER", "accent"]], "stamp": "OFFICIEL", "images": ["spiky.jpg"]},
+  {"text": "Quand tu la frappes, elle te renvoie des pointes.", "label": "COMMENT ÇA MARCHE", "big": [["RENVOIE", "white"], ["DES POINTES", "accent"]], "images": ["spiky.jpg"]},
+  {"text": "Six à neuf pour cent des points de vie max de ta troupe, à chaque coup !", "label": "DÉGÂTS", "big": [["6 À 9 %", "accent"], ["DES PV MAX", "white"]], "stamp": "OFFICIEL", "images": ["spiky.jpg"]},
+  {"text": "À côté, la Firecracker Tower tire des roquettes, avec des étincelles derrière la cible.", "label": "FIRECRACKER TOWER", "big": [["ROQUETTES", "white"], ["+ ÉTINCELLES", "accent"]], "stamp": "OFFICIEL", "images": ["fire1.jpg", "fire2.jpg", "fire3.jpg"]},
+  {"text": "Elle touche le sol et les airs. Ton armée n'a plus de zone sûre.", "label": "SOL + AIR", "big": [["SOL", "white"], ["ET AIR", "accent"]], "images": ["fire3.jpg", "scatter.jpg", "fire2.jpg"]},
+  {"text": "Heureusement, il y a le Sort héroïque : moins de dégâts, plus de vitesse, et tes troupes traversent les murs !", "label": "SORT HÉROÏQUE", "big": [["TRAVERSE", "white"], ["LES MURS", "accent"]], "stamp": "OFFICIEL", "images": ["heroic.jpg"]},
+  {"text": "Tu préfères la Spiky Tower ou le Sort héroïque ? Dis-le en commentaire, et rejoins le Discord, lien en bio.", "gauge": true}
+ ]}
