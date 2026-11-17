@@ -27,6 +27,7 @@ for k, s in enumerate(SPEC["scenes"]):
     SCENES.append(dict(v=k, label=s.get("label"), big=[(t, PURPLE if c == "accent" else WHITE) for t, c in s.get("big", [])],
                        stamp=(s["stamp"], PURPLE, 0.55) if s.get("stamp") else None, gauge=bool(s.get("gauge")),
                        sub=s["text"], images=s.get("images", [])))
+GAUGE_LABELS = SPEC.get("gauge_labels", ["OFFICIEL", "FUITE"])
 PAD = 0.3
 SHOT = 2.2          # un plan toutes les ~2 s
 GAUGE_EXTRA = 3.0   # temps supplémentaire pour les jauges
@@ -187,7 +188,7 @@ def sub_layer(sub, lt, dur):
 def gauge_frame(img, lt, t_start):
     """Jauges OFFICIEL / FUITE, « ? » violet, « TON AVIS ? » — style référence."""
     p = prog(lt, t_start, 0.6)
-    for k, (label, cx, phase) in enumerate([("OFFICIEL", 330, 0.0), ("FUITE", 750, 1.3)]):
+    for k, (label, cx, phase) in enumerate([(GAUGE_LABELS[0], 330, 0.0), (GAUGE_LABELS[1], 750, 1.3)]):
         fill = 0.25 + 0.6 * (0.5 + 0.5 * math.sin(lt * (4 + 2 * k) + phase)) if lt > t_start + 0.6 else 0.0
         fill = fill * eo(p)
         top, bot = 560, 1160

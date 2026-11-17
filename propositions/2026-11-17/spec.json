@@ -1,0 +1,148 @@
+{
+ "out": "short.mp4",
+ "accent": [
+  165,
+  90,
+  255
+ ],
+ "header": "CLASH OF CLANS",
+ "scenes": [
+  {
+   "text": "Supercell vient d'ajouter les escouades, et ça change toute ton attaque !",
+   "label": "NOUVEAU",
+   "big": [
+    [
+     "ESCOUADES",
+     "accent"
+    ]
+   ],
+   "stamp": "OFFICIEL",
+   "images": [
+    "supercell_th19.jpg",
+    "Barch_Squad.jpg"
+   ]
+  },
+  {
+   "text": "Une escouade, c'est un groupe de troupes qui sort d'un seul tap.",
+   "label": "1 TAP",
+   "big": [
+    [
+     "UN GROUPE",
+     "white"
+    ]
+   ],
+   "images": [
+    "Barch_Squad.jpg",
+    "Giant_Wizard_Squad.jpg"
+   ]
+  },
+  {
+   "text": "Et tu as plus de troupes pour la même place dans ton armée.",
+   "label": "BONUS",
+   "big": [
+    [
+     "PLUS DE TROUPES",
+     "accent"
+    ]
+   ],
+   "images": [
+    "Giant_Wizard_Squad.jpg",
+    "Wall_Breaker_Squad.jpg"
+   ]
+  },
+  {
+   "text": "Tu les débloques dès l'hôtel de ville 8, avec la caserne d'escouade.",
+   "label": "HDV 8",
+   "big": [
+    [
+     "CASERNE",
+     "white"
+    ],
+    [
+     "D'ESCOUADE",
+     "accent"
+    ]
+   ],
+   "images": [
+    "Wall_Breaker_Squad.jpg",
+    "Minion_Squad.jpg"
+   ]
+  },
+  {
+   "text": "Il y en a douze au lancement, une nouvelle à chaque hôtel de ville : barbares archers, ballons, golem et sorcières, cavaliers de cochon.",
+   "label": "12 ESCOUADES",
+   "big": [
+    [
+     "DOUZE",
+     "accent"
+    ]
+   ],
+   "images": [
+    "Balloon_Squad.jpg",
+    "Golem_Witch_Squad.jpg",
+    "Hog_Rider_Squad.jpg"
+   ]
+  },
+  {
+   "text": "Puis les mineurs, les guérisseurs, le P.E.K.K.A avec le titan électrique, et les dragons.",
+   "label": "LA SUITE",
+   "big": [
+    [
+     "MINEURS",
+     "white"
+    ],
+    [
+     "DRAGONS",
+     "accent"
+    ]
+   ],
+   "images": [
+    "Miner_Squad.jpg",
+    "Healer_Squad.jpg",
+    "P_E_K_K_A_Titan_Squad.jpg",
+    "Dragons_Squad.jpg"
+   ]
+  },
+  {
+   "text": "Et la dernière, à l'hôtel de ville 19 : trois bébés dragons.",
+   "label": "HDV 19",
+   "big": [
+    [
+     "BÉBÉS DRAGONS",
+     "accent"
+    ]
+   ],
+   "images": [
+    "Baby_Dragon_Squad.jpg",
+    "supercell_th19_banner.jpg"
+   ]
+  },
+  {
+   "text": "Chaque escouade a une capacité : résistance aux dégâts de zone, bouclier au départ, ou résistance aux pièges.",
+   "label": "CAPACITÉS",
+   "big": [
+    [
+     "BOUCLIER",
+     "white"
+    ],
+    [
+     "PIÈGES",
+     "accent"
+    ]
+   ],
+   "images": [
+    "Healer_Squad.jpg",
+    "Hog_Rider_Squad.jpg",
+    "Barch_Squad.jpg"
+   ]
+  },
+  {
+   "text": "Tu sors quelle escouade en premier : barbares archers, ou cavaliers de cochon ? Dis-le en commentaire, et rejoins le Discord, lien en bio.",
+   "gauge": true
+  }
+ ],
+ "gauge_labels": [
+  "BARCH",
+  "HOGS"
+ ]
+}
