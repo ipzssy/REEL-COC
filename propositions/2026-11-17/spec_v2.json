@@ -1,0 +1,140 @@
+{
+ "n": 0,
+ "theme": {
+  "hook": "game",
+  "subs": "pop"
+ },
+ "badge": "● OFFICIEL",
+ "cap_sub": "Clash of Clans · HDV 19",
+ "bg_image": "Barch.jpg",
+ "card_scale": 1.12,
+ "keys": [
+  "stop",
+  "trente",
+  "quinze",
+  "escouades",
+  "tap",
+  "caserne",
+  "douze",
+  "bouclier",
+  "officiel",
+  "débat",
+  "discord"
+ ],
+ "scenes": [
+  {
+   "kind": "hook",
+   "text": "STOP ! Trente troupes, pour la place de quinze !",
+   "clip": "img:Barch.jpg",
+   "ss": 0,
+   "hook_h": 560
+  },
+  {
+   "kind": "std",
+   "text": "Supercell vient d'ajouter les escouades, avec l'hôtel de ville 19.",
+   "head": [
+    "ESCOUADES",
+    ""
+   ],
+   "clip": "img:th19.jpg",
+   "ss": 0,
+   "card": "video",
+   "cap": "Annonce Supercell",
+   "move": "pan",
+   "hit": "escouades"
+  },
+  {
+   "kind": "std",
+   "text": "Une escouade, c'est un groupe de troupes qui sort d'un seul tap.",
+   "head": [
+    "1 TAP",
+    ""
+   ],
+   "clip": "img:Barch.jpg",
+   "ss": 0,
+   "card": "video",
+   "cap": "Barch Squad",
+   "move": "snap",
+   "hit": "tap"
+  },
+  {
+   "kind": "std",
+   "text": "Tu les débloques dès l'hôtel de ville 8, avec la caserne d'escouade.",
+   "head": [
+    "DÈS L'HDV 8",
+    ""
+   ],
+   "clip": "img:Wall_Breaker.jpg",
+   "ss": 0,
+   "card": "video",
+   "cap": "Wall Breaker Squad",
+   "move": "reveal",
+   "hit": "caserne"
+  },
+  {
+   "kind": "std",
+   "text": "Il y en a douze : une nouvelle à chaque hôtel de ville.",
+   "head": [
+    "12 ESCOUADES",
+    ""
+   ],
+   "clip": "img:Golem_Witch.jpg",
+   "ss": 0,
+   "card": "video",
+   "cap": "Golem Witch Squad",
+   "move": "panr",
+   "hit": "douze"
+  },
+  {
+   "kind": "std",
+   "text": "Chacune a un bonus, comme un bouclier de départ pour les guérisseurs.",
+   "head": [
+    "BONUS",
+    ""
+   ],
+   "clip": "img:Healer.jpg",
+   "ss": 0,
+   "card": "video",
+   "cap": "Healer Squad",
+   "move": "pan",
+   "hit": "bouclier"
+  },
+  {
+   "kind": "std",
+   "text": "Résultat : trente troupes pour quinze places. Et c'est officiel !",
+   "head": [
+    "OFFICIEL",
+    ""
+   ],
+   "clip": "img:Barch.jpg",
+   "ss": 0,
+   "card": "video",
+   "cap": "Barch Squad",
+   "move": "snap",
+   "hit": "officiel"
+  },
+  {
+   "kind": "versus",
+   "text": "Rejoins le Discord, lien en bio. Barbares archers, ou cavaliers de cochon, tu choisis quoi ? Dis-le en commentaire, le débat est ouvert !",
+   "names": [
+    "BARCH",
+    "HOGS"
+   ],
+   "subs": [
+    "ARCHERS",
+    "COCHONS"
+   ],
+   "w1": "barbares",
+   "w2": "cavaliers",
+   "qword": "choisis",
+   "cword": "commentaire",
+   "icons": [
+    "ic_Barch.png",
+    "ic_Hog_Rider.png"
+   ]
+  }
+ ],
+ "clean": true,
+ "display": {},
+ "subs_y": 1270
+}
