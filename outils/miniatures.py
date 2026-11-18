@@ -95,7 +95,7 @@ SPECS = {
     '18': ('DÉTRUIS', 'EN 1ER', [('Inferno Tower10 Multi.png', 520, 820, 330, 1010, 0), ('Scattershot7.png', 520, 560, 770, 1080, 0)], ('CES DÉFENSES', R), 'TOUT DE SUITE'),
     '19': ('3 PHASES', '3 ÉTOILES', [('Barbarian King info 2.png', 900, 860, 540, 1010, 0)], ('NE RATE', R), 'PAS ÇA'),
     '21': ('STAR', 'BONUS ?', [('4x Battle Bake.png', 520, 640, 330, 1030, -8), ('Loot Cart Lolly.png', 520, 600, 770, 1050, 8)], ('BUTIN X4', R), 'NOUVEAUTÉ OFFICIELLE'),
-    'hache': ('NOUVELLE', 'RARETÉ ?', [('axe', 960, 900, 540, 1010, -4)], ('LÉGENDAIRE', R), 'HACHE DU BLIZZARD'),  # image fournie localement (blog Supercell)
+    'hache': ('NOUVEL', 'ÉQUIPEMENT', [('axe_cut.png', 900, 840, 540, 1010, -12)], ('LÉGENDAIRE', R), 'HACHE DU BLIZZARD'),  # détourage fourni : propositions/2026-11-18/axe_cut.png (à copier dans CC_WD)
     '20': ('BASE', 'RASÉE ?', [('Eagle Artillery Level1 info.png', 770, 700, 540, 1000, 0)], ('3 ERREURS', R), 'À ÉVITER'),
 }
 
