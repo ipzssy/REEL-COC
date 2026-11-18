@@ -1,0 +1,145 @@
+{
+ "out": "short.mp4",
+ "accent": [
+  165,
+  90,
+  255
+ ],
+ "header": "CLASH OF CLANS",
+ "scenes": [
+  {
+   "text": "Supercell vient d'annoncer une nouvelle rareté d'équipement. Et ça change tout.",
+   "label": "OFFICIEL",
+   "big": [
+    [
+     "NOUVELLE",
+     "white"
+    ],
+    [
+     "RARETÉ",
+     "accent"
+    ]
+   ],
+   "stamp": "OFFICIEL",
+   "images": [
+    "axe_scene.png",
+    "axe_banner.png"
+   ]
+  },
+  {
+   "text": "Elle s'appelle l'Équipement Légendaire. Le premier : la Hache du Blizzard, pour le Roi des Barbares.",
+   "label": "ÉQUIPEMENT LÉGENDAIRE",
+   "big": [
+    [
+     "HACHE DU",
+     "white"
+    ],
+    [
+     "BLIZZARD",
+     "accent"
+    ]
+   ],
+   "images": [
+    "axe_banner.png",
+    "axe_scene.png"
+   ]
+  },
+  {
+   "text": "Et tu pourras l'avoir gratuitement, dans un nouvel événement de craft, dès l'hôtel de ville 8.",
+   "label": "GRATUIT",
+   "big": [
+    [
+     "EVENT",
+     "white"
+    ],
+    [
+     "DE CRAFT",
+     "accent"
+    ]
+   ],
+   "images": [
+    "craft_event.png",
+    "craft_axe_zoom.png"
+   ]
+  },
+  {
+   "text": "Tu rates l'événement ? Pas grave : tu pourras la débloquer plus tard, chez le marchand ou dans les événements d'équipement.",
+   "label": "PAS DE PANIQUE",
+   "big": [
+    [
+     "RATTRAPAGE",
+     "accent"
+    ]
+   ],
+   "images": [
+    "craft_event.png",
+    "axe_scene.png"
+   ]
+  },
+  {
+   "text": "Il y aura aussi un Craft Pass optionnel à 9,99 dollars, avec la hache déjà niveau 15. Mais tu n'en as pas besoin.",
+   "label": "OPTIONNEL",
+   "big": [
+    [
+     "CRAFT PASS",
+     "white"
+    ],
+    [
+     "9,99 $",
+     "accent"
+    ]
+   ],
+   "images": [
+    "craft_axe_zoom.png",
+    "craft_event.png"
+   ]
+  },
+  {
+   "text": "Niveau maximum : 33. Les niveaux 28 à 30 arrivent à l'hôtel de ville 16, et 31 à 33 à l'hôtel de ville 18.",
+   "label": "NIVEAU MAX",
+   "big": [
+    [
+     "NIVEAU",
+     "white"
+    ],
+    [
+     "33",
+     "accent"
+    ]
+   ],
+   "images": [
+    "ore_costs.png",
+    "ore_shiny.png",
+    "ore_glowy.png",
+    "ore_starry.png"
+   ]
+  },
+  {
+   "text": "Mon conseil : garde un peu de minerai avant d'améliorer un équipement épique. Tu pourrais le regretter.",
+   "label": "CONSEIL",
+   "big": [
+    [
+     "GARDE TON",
+     "white"
+    ],
+    [
+     "MINERAI",
+     "accent"
+    ]
+   ],
+   "images": [
+    "starry_income.png",
+    "ore_starry.png",
+    "axe_scene.png"
+   ]
+  },
+  {
+   "text": "Tu craftes la hache direct, ou tu continues tes épiques ? Réponds en commentaire. Rejoins le Discord, lien en bio.",
+   "gauge": true,
+   "gauge_labels": [
+    "CRAFT HACHE",
+    "ÉPIQUES"
+   ]
+  }
+ ]
+}

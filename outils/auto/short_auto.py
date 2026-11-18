@@ -25,7 +25,7 @@ SN = os.path.join(PROJ, "img") + "/"
 SCENES = []
 for k, s in enumerate(SPEC["scenes"]):
     SCENES.append(dict(v=k, label=s.get("label"), big=[(t, PURPLE if c == "accent" else WHITE) for t, c in s.get("big", [])],
-                       stamp=(s["stamp"], PURPLE, 0.55) if s.get("stamp") else None, gauge=bool(s.get("gauge")),
+                       stamp=(s["stamp"], PURPLE, 0.55) if s.get("stamp") else None, gauge=bool(s.get("gauge")), glabels=s.get("gauge_labels", ["OFFICIEL", "FUITE"]),
                        sub=s["text"], images=s.get("images", [])))
 PAD = 0.3
 SHOT = 2.2          # un plan toutes les ~2 s
@@ -184,10 +184,10 @@ def sub_layer(sub, lt, dur):
     return im
 
 
-def gauge_frame(img, lt, t_start):
+def gauge_frame(img, lt, t_start, labels=("OFFICIEL", "FUITE")):
     """Jauges OFFICIEL / FUITE, « ? » violet, « TON AVIS ? » — style référence."""
     p = prog(lt, t_start, 0.6)
-    for k, (label, cx, phase) in enumerate([("OFFICIEL", 330, 0.0), ("FUITE", 750, 1.3)]):
+    for k, (label, cx, phase) in enumerate([(labels[0], 330, 0.0), (labels[1], 750, 1.3)]):
         fill = 0.25 + 0.6 * (0.5 + 0.5 * math.sin(lt * (4 + 2 * k) + phase)) if lt > t_start + 0.6 else 0.0
         fill = fill * eo(p)
         top, bot = 560, 1160
@@ -220,7 +220,7 @@ def frame(t):
     put(img, text_img(HEADER, 62, WHITE, font=BOLDF, maxw=900), W / 2, 150, alpha=prog(t, 0.0, 0.25))
     dur = DUR[i]
     if s.get("gauge"):
-        gauge_frame(img, lt, 0.0)
+        gauge_frame(img, lt, 0.0, s["glabels"])
     else:
         # plans : une coupe toutes les ~SHOT secondes, chaque plan zoome de 100 % à 115 %
         n_shots = max(1, round(dur / SHOT))
