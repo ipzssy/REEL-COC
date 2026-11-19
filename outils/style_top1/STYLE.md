@@ -13,3 +13,6 @@ Validé par Mikael le 18/11/2026. Références : Hache du Blizzard, Héros, Éle
 
 Code : eng.py (moteur : pop, counter, card, rframe, flash, VidBG/ImgBG, warp des pauses), heroes.py / electro.py / axe_v2.py (scénarios exemples : une liste de Scene(t0, t1, fond, éléments)).
 Les chemins (assets r/ h/ e/, clips de gameplay) sont ceux de la session de travail ; à adapter.
+
+## Fond validé (19/11/2026)
+Rush de gameplay en plein écran derrière (VidBG, dim 0.42, pas de flou, pas de fenêtre au milieu), un moment différent par scène, lié à la phrase. Voir gen.py / clips13.py / run13.py.
