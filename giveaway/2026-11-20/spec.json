@@ -1,0 +1,157 @@
+{
+ "n": 3,
+ "theme": {
+  "hook": "game",
+  "subs": "pop"
+ },
+ "badge": "● GIVEAWAY",
+ "cap_sub": "Clash of Clans · remparts",
+ "bg_image": "bg.jpg",
+ "card_scale": 1.1,
+ "keys": [
+  "stop",
+  "gratuit",
+  "étape",
+  "rejoins",
+  "abonne-toi",
+  "bonus",
+  "chances",
+  "tirage",
+  "commentaire",
+  "remparts",
+  "giveaway",
+  "ami",
+  "gagnant",
+  "participes",
+  "passes",
+  "jours",
+  "trois"
+ ],
+ "scenes": [
+  {
+   "kind": "hook",
+   "text": "STOP ! Plus que trois jours pour tes remparts améliorés gratuits !",
+   "clip": "vid:hook.mp4",
+   "ss": 0.0,
+   "hook_h": 547,
+   "alert": "GIVEAWAY",
+   "big": "PLUS QUE 3 JOURS !",
+   "big_red": "3 JOURS",
+   "stamp": [
+    "trois",
+    "3 JOURS"
+   ]
+  },
+  {
+   "kind": "std",
+   "text": "Je les améliore pour toi, gratuit, en moins de deux heures.",
+   "head": [
+    "GRATUIT",
+    "EN -2H"
+   ],
+   "clip": "vid:dialog.mp4",
+   "ss": 0.0,
+   "card": "video",
+   "cap": "Amélioration des remparts",
+   "tags": [
+    [
+     "gratuit",
+     "100% GRATUIT",
+     "r"
+    ]
+   ]
+  },
+  {
+   "kind": "std",
+   "text": "Étape 1 : rejoins le Discord Clash Center, lien en bio, et clique sur la réaction fête.",
+   "head": [
+    "ÉTAPE 1",
+    "REJOINS"
+   ],
+   "clip": "vid:etape1.mp4",
+   "ss": 0.0,
+   "card": "video",
+   "cap": "Discord Clash Center",
+   "tags": [
+    [
+     "bio",
+     "DISCORD : LIEN EN BIO",
+     "r"
+    ]
+   ]
+  },
+  {
+   "kind": "std",
+   "text": "Étape 2 : abonne-toi à la chaîne YouTube, et invite au moins un ami.",
+   "head": [
+    "ÉTAPE 2",
+    "ABONNE-TOI"
+   ],
+   "clip": "vid:etape2.mp4",
+   "ss": 0.0,
+   "card": "video",
+   "cap": "YouTube · Clash Center",
+   "tags": [
+    [
+     "ami",
+     "1 AMI MINIMUM",
+     "r"
+    ]
+   ]
+  },
+  {
+   "kind": "std",
+   "text": "Bonus : plus tu invites d'amis, plus tu as de chances de gagner !",
+   "head": [
+    "BONUS",
+    "+ D'AMIS"
+   ],
+   "clip": "vid:bonus.mp4",
+   "ss": 0.0,
+   "card": "video",
+   "cap": "Plus d'invitations, plus de chances",
+   "tags": [
+    [
+     "chances",
+     "+ DE CHANCES",
+     "r"
+    ]
+   ]
+  },
+  {
+   "kind": "std",
+   "text": "Le tirage a lieu le 23 à 14 heures. Un seul gagnant !",
+   "head": [
+    "TIRAGE",
+    "LE 23 À 14H"
+   ],
+   "clip": "vid:tirage.mp4",
+   "ss": 0.0,
+   "card": "video",
+   "cap": "Giveaway remparts",
+   "tags": [
+    [
+     "gagnant",
+     "1 GAGNANT",
+     "r"
+    ]
+   ]
+  },
+  {
+   "kind": "versus",
+   "text": "Tu participes ou tu passes ? Dis-le en commentaire, et rejoins le Discord, lien en bio.",
+   "names": [
+    "JE",
+    "JE"
+   ],
+   "subs": [
+    "PARTICIPE",
+    "PASSE"
+   ],
+   "w1": "participes",
+   "w2": "passes",
+   "qword": "ou",
+   "cword": "commentaire"
+  }
+ ]
+}
