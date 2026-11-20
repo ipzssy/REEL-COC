@@ -1,0 +1,145 @@
+{
+ "out": "short.mp4",
+ "accent": [
+  165,
+  90,
+  255
+ ],
+ "header": "CLASH OF CLANS",
+ "gauge_labels": [
+  "DIRECT",
+  "JE GARDE"
+ ],
+ "scenes": [
+  {
+   "text": "Cette semaine, Supercell te donne des troupes gratuites pour attaquer.",
+   "label": "ÉVÉNEMENT",
+   "big": [
+    [
+     "TROUPES",
+     "white"
+    ],
+    [
+     "GRATUITES",
+     "accent"
+    ]
+   ],
+   "images": [
+    "heros.jpg",
+    "supercell.jpg",
+    "chest3.jpg"
+   ]
+  },
+  {
+   "text": "L'événement Snackable Troops démarre aujourd'hui et dure jusqu'au vingt-sept novembre.",
+   "label": "DU 20 AU 27 NOV",
+   "big": [
+    [
+     "SNACKABLE",
+     "accent"
+    ],
+    [
+     "TROUPES",
+     "white"
+    ]
+   ],
+   "images": [
+    "bake.jpg",
+    "chest1.jpg",
+    "supercell.jpg"
+   ]
+  },
+  {
+   "text": "Le principe : tu appelles des troupes en plus de ton armée, directement pendant l'attaque.",
+   "label": "LE PRINCIPE",
+   "big": [
+    [
+     "TROUPES",
+     "white"
+    ],
+    [
+     "EN PLUS",
+     "accent"
+    ]
+   ],
+   "images": [
+    "victoire.jpg",
+    "slice.jpg",
+    "heros.jpg"
+   ]
+  },
+  {
+   "text": "Mais attention : elles sont limitées. Une fois utilisées, elles ne reviennent pas.",
+   "label": "ATTENTION",
+   "big": [
+    [
+     "LIMITÉES",
+     "accent"
+    ]
+   ],
+   "images": [
+    "lolly.jpg",
+    "chest2.jpg",
+    "victoire.jpg"
+   ]
+  },
+  {
+   "text": "D'après la communauté, un nouveau lot tomberait toutes les douze heures. À confirmer.",
+   "label": "TOUTES LES 12 H",
+   "big": [
+    [
+     "12",
+     "accent"
+    ],
+    [
+     "HEURES",
+     "white"
+    ]
+   ],
+   "stamp": "À CONFIRMER",
+   "images": [
+    "chest4.jpg",
+    "bake.jpg",
+    "slice.jpg"
+   ]
+  },
+  {
+   "text": "Ne gaspille rien : garde-les pour tes plus grosses attaques, pas pour les villages faciles.",
+   "label": "ASTUCE",
+   "big": [
+    [
+     "GROSSES",
+     "white"
+    ],
+    [
+     "ATTAQUES",
+     "accent"
+    ]
+   ],
+   "images": [
+    "heros.jpg",
+    "chest3.jpg",
+    "victoire.jpg"
+   ]
+  },
+  {
+   "text": "Et dimanche, les Jeux de clan arrivent, avec des troupes de renfort pendant les quatre premiers jours.",
+   "label": "JEUX DE CLAN",
+   "big": [
+    [
+     "DIMANCHE",
+     "accent"
+    ]
+   ],
+   "images": [
+    "supercell.jpg",
+    "lolly.jpg",
+    "chest2.jpg"
+   ]
+  },
+  {
+   "text": "Tu les utilises direct, ou tu les gardes ? Dis-le en commentaire, et rejoins le Discord, lien en bio.",
+   "gauge": true
+  }
+ ]
+}
