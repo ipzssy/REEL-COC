@@ -1,0 +1,11 @@
+{"out":"short.mp4","accent":[165,90,255],"header":"CLASH OF CLANS","scenes":[
+{"text":"Supercell vient d'ajouter les Squads, et ça change toute ton attaque !","label":"NOUVEAUTÉ HDV 19","big":[["LES","white"],["SQUADS","accent"]],"stamp":"OFFICIEL","images":["title.jpg","th19.jpg"]},
+{"text":"Un squad, c'est un groupe de troupes fixe, que tu déploies d'un seul tap.","label":"C'EST QUOI ?","big":[["1","accent"],["TAP","white"]],"images":["barch.jpg","dragons.jpg","hog.jpg"]},
+{"text":"Le gros avantage : ils coûtent moins de place qu'en solo. Le Barch Squad, c'est trente troupes pour quinze places.","label":"MOINS DE PLACE","big":[["30","white"],["POUR 15","accent"]],"images":["barch.jpg","gianwiz.jpg"]},
+{"text":"Tu les débloques avec la Caserne de Squads, dès l'hôtel de ville 8.","label":"CASERNE DE SQUADS","big":[["HDV","white"],["8","accent"]],"images":["barracks1.jpg","support_barracks.jpg","barracks5.jpg"]},
+{"text":"Il y a douze squads, des Barbares et Archers, jusqu'aux Bébés Dragons à l'hôtel de ville 19.","label":"12 SQUADS","big":[["12","accent"],["SQUADS","white"]],"images":["wall.jpg","balloon.jpg","miner.jpg","healer.jpg","baby.jpg"]},
+{"text":"Chaque squad a sa formation. Avec Golem et Sorcières, les Golems passent devant, donc les défenses les ciblent en premier.","label":"FORMATIONS","big":[["GOLEMS","accent"],["DEVANT","white"]],"images":["golem.jpg","pekka.jpg"]},
+{"text":"Les capacités arrivent au niveau 2, mais les améliorations de squads sont réservées à l'hôtel de ville 19.","label":"CAPACITÉS","big":[["NIVEAU","white"],["2","accent"]],"images":["dragons.jpg","baby.jpg","barracks12.jpg"]},
+{"text":"Attention : impossible de les donner dans le château de clan.","label":"ATTENTION","big":[["PAS DE","white"],["DON","accent"]],"images":["healer.jpg","hog.jpg"]},
+{"text":"Tu joues les squads, ou tu restes sur tes troupes ? Réponds en commentaire, et rejoins le Discord, lien en bio.","gauge":true}
+]}

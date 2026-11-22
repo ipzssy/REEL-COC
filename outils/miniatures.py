@@ -96,6 +96,7 @@ SPECS = {
     '19': ('3 PHASES', '3 ÉTOILES', [('Barbarian King info 2.png', 900, 860, 540, 1010, 0)], ('NE RATE', R), 'PAS ÇA'),
     '21': ('STAR', 'BONUS ?', [('4x Battle Bake.png', 520, 640, 330, 1030, -8), ('Loot Cart Lolly.png', 520, 600, 770, 1050, 8)], ('BUTIN X4', R), 'NOUVEAUTÉ OFFICIELLE'),
     '20': ('BASE', 'RASÉE ?', [('Eagle Artillery Level1 info.png', 770, 700, 540, 1000, 0)], ('3 ERREURS', R), 'À ÉVITER'),
+    'squads': ('NOUVEAU', 'SQUADS ?', [('Avatar Barch Squad.png', 560, 640, 290, 1060, 0), ('Avatar Dragons Squad.png', 620, 700, 790, 1020, 0)], ('1 TAP', R), 'NOUVEAUTÉ OFFICIELLE'),
 }
 
 
