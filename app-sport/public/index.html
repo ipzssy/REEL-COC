@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f1115">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
+<title>FitBeat</title>
+</head>
+<body>
+<main id="view"></main>
+
+<div id="player" hidden>
+  <span id="trackName">—</span>
+  <button id="prev" aria-label="Précédent">⏮</button>
+  <button id="play" aria-label="Lecture">▶</button>
+  <button id="next" aria-label="Suivant">⏭</button>
+</div>
+
+<nav>
+  <button data-tab="week">Semaine</button>
+  <button data-tab="meals">Repas</button>
+  <button data-tab="music">Musique</button>
+  <button data-tab="coach">Coach</button>
+  <button data-tab="profile">Profil</button>
+</nav>
+<script src="app.js"></script>
+</body>
+</html>
