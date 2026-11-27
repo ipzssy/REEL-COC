@@ -1,0 +1,9 @@
+# Remplace fit.example.com par ton (sous-)domaine, dont l'enregistrement A pointe vers l'IP du serveur OVH.
+# HTTPS obligatoire : sans lui, le service worker et l'installation PWA ne fonctionnent pas.
+fit.example.com {
+	# Protège l'accès (les routes IA dépensent ta clé API). Génère le hash : caddy hash-password
+	basicauth {
+		moi REMPLACER_PAR_LE_HASH
+	}
+	reverse_proxy 127.0.0.1:3000
+}

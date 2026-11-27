@@ -49,10 +49,20 @@ Contexte utilisateur (JSON) : ${JSON.stringify(context || {}).slice(0, 1500)}`;
   },
 };
 
+// Limite par IP des routes IA (elles consomment ta clé API) : 40 requêtes / heure.
+const hits = new Map();
+function limited(req) {
+  const ip = (req.headers["x-forwarded-for"] || req.socket.remoteAddress || "").split(",")[0].trim();
+  const now = Date.now(), arr = (hits.get(ip) || []).filter((t) => now - t < 3600e3);
+  arr.push(now); hits.set(ip, arr);
+  return arr.length > 40;
+}
+
 http.createServer(async (req, res) => {
   const send = (code, body, type = "application/json") => { res.writeHead(code, { "content-type": type }); res.end(typeof body === "string" || Buffer.isBuffer(body) ? body : JSON.stringify(body)); };
   const url = new URL(req.url, "http://x");
   if (req.method === "POST" && route[url.pathname]) {
+    if (limited(req)) return send(429, { error: "Trop de requêtes, réessaie plus tard" });
     let raw = ""; for await (const c of req) { raw += c; if (raw.length > 50000) return send(413, { error: "Trop gros" }); }
     try { send(200, await route[url.pathname](JSON.parse(raw || "{}"))); }
     catch (e) { send(e.status || 500, { error: e.message }); }
@@ -61,4 +71,4 @@ http.createServer(async (req, res) => {
   let p = path.normalize(path.join(PUB, url.pathname === "/" ? "index.html" : decodeURIComponent(url.pathname)));
   if (!p.startsWith(PUB)) return send(403, "Interdit", "text/plain");
   fs.readFile(p, (err, data) => err ? send(404, "Introuvable", "text/plain") : send(200, data, TYPES[path.extname(p)] || "application/octet-stream"));
-}).listen(PORT, () => console.log(`http://localhost:${PORT}  (IA ${KEY ? "active, modèle " + MODEL : "désactivée : ANTHROPIC_API_KEY absente"})`));
+}).listen(PORT, process.env.HOST || "127.0.0.1", () => console.log(`http://localhost:${PORT}  (IA ${KEY ? "active, modèle " + MODEL : "désactivée : ANTHROPIC_API_KEY absente"})`));

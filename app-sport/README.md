@@ -20,3 +20,8 @@ Ouvrir http://localhost:3000. Sans clé, tout fonctionne sauf l'analyse de repas
 ## Musique
 
 Le beat WebAudio fonctionne sans fichier. Pour de vrais morceaux, ajouter des mp3 libres de droits dans `public/music/` et les déclarer dans `public/music/playlist.json`.
+
+## Déploiement sur serveur OVH
+
+Fichiers dans `deploy/` : `install.sh` (installe Node, Caddy, l'utilisateur système et le service systemd), `fitbeat.service`, `Caddyfile` (HTTPS automatique + mot de passe).
+Le serveur Node n'écoute que sur 127.0.0.1 ; Caddy est le seul point d'entrée public. La clé API vit dans `/etc/fitbeat.env` (droits 600). Les routes IA sont limitées à 40 requêtes/heure/IP.

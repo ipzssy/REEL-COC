@@ -1,0 +1,16 @@
+[Unit]
+Description=FitBeat
+After=network.target
+
+[Service]
+User=fitbeat
+WorkingDirectory=/opt/fitbeat/app-sport
+EnvironmentFile=/etc/fitbeat.env
+ExecStart=/usr/bin/node server.js
+Restart=on-failure
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target
