@@ -28,6 +28,13 @@ Réponds UNIQUEMENT par un JSON valide, sans texte autour :
 {"items":[{"name":string,"qty":string,"kcal":number,"protein":number,"carbs":number,"fat":number}],"confidence":"haute"|"moyenne"|"faible","note":string}
 kcal en kcal, macros en grammes, nombres entiers.`;
 
+const PLAN_SYS = `Tu es un coach de musculation. Tu reçois les exercices choisis par l'utilisateur pour une séance, son profil (poids, taille, âge, sexe, niveau, objectif, matériel) et parfois une photo de son corps.
+Pour CHAQUE exercice, dans le même ordre, donne séries, répétitions (nombre, fourchette "8-10" ou durée "45s") et temps de repos entre séries en secondes. Adapte au niveau, à l'objectif et au volume total de la séance (ne dépasse pas ~20 séries au total).
+La photo sert uniquement à estimer grossièrement la corpulence et le niveau apparent. Ne donne aucun chiffre de masse grasse, aucun diagnostic. Si la photo est inutilisable, ignore-la. Sois prudent : en cas de doute, charge plus légère.
+Réponds UNIQUEMENT par un JSON valide :
+{"exercises":[{"name":string,"sets":number,"reps":string,"restSec":number,"note":string}],"restDays":string,"bodyNote":string,"confidence":"haute"|"moyenne"|"faible"}
+"restDays" : conseil sur le nombre de jours de repos par semaine et la récupération (2 phrases max). "bodyNote" : une phrase sur ce que tu as retenu de la photo, vide s'il n'y en a pas. "note" : conseil technique court.`;
+
 const route = {
   "/api/meal": async ({ text }) => {
     if (!text || text.length > 500) throw Object.assign(new Error("Description invalide"), { status: 400 });
@@ -39,6 +46,23 @@ const route = {
       kcal: t.kcal + (i.kcal | 0), protein: t.protein + (i.protein | 0),
       carbs: t.carbs + (i.carbs | 0), fat: t.fat + (i.fat | 0) }), { kcal: 0, protein: 0, carbs: 0, fat: 0 });
     return data;
+  },
+  "/api/plan": async ({ day, exercises, profile, photo }) => {
+    if (!Array.isArray(exercises) || !exercises.length || exercises.length > 20) throw Object.assign(new Error("Liste d'exercices invalide"), { status: 400 });
+    const names = exercises.map((e) => String(e).slice(0, 80));
+    const content = [];
+    if (photo) {
+      const m = /^data:image\/(jpeg|png);base64,([A-Za-z0-9+/=]+)$/.exec(photo);
+      if (!m || m[2].length > 2500000) throw Object.assign(new Error("Photo invalide ou trop lourde"), { status: 400 });
+      content.push({ type: "image", source: { type: "base64", media_type: "image/" + m[1], data: m[2] } });
+    }
+    content.push({ type: "text", text: JSON.stringify({ jour: day, exercices: names, profil: profile }) });
+    const out = await claude(PLAN_SYS, [{ role: "user", content }], 1500);
+    const m = out.match(/\{[\s\S]*\}/);
+    if (!m) throw Object.assign(new Error("Réponse IA illisible"), { status: 502 });
+    const d = JSON.parse(m[0]);
+    d.exercises = names.map((n, i) => { const e = (d.exercises || [])[i] || {}; return { name: n, sets: Math.min(10, Math.max(1, e.sets | 0 || 3)), reps: String(e.reps || "10"), restSec: Math.min(600, Math.max(15, e.restSec | 0 || 90)), note: String(e.note || "") }; });
+    return d;
   },
   "/api/coach": async ({ messages, context }) => {
     if (!Array.isArray(messages) || !messages.length || messages.length > 30) throw Object.assign(new Error("Messages invalides"), { status: 400 });
@@ -63,7 +87,7 @@ http.createServer(async (req, res) => {
   const url = new URL(req.url, "http://x");
   if (req.method === "POST" && route[url.pathname]) {
     if (limited(req)) return send(429, { error: "Trop de requêtes, réessaie plus tard" });
-    let raw = ""; for await (const c of req) { raw += c; if (raw.length > 50000) return send(413, { error: "Trop gros" }); }
+    let raw = ""; for await (const c of req) { raw += c; if (raw.length > 3000000) return send(413, { error: "Trop gros" }); }
     try { send(200, await route[url.pathname](JSON.parse(raw || "{}"))); }
     catch (e) { send(e.status || 500, { error: e.message }); }
     return;
